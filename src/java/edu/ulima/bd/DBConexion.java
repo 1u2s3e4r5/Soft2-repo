@@ -6,9 +6,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConexion {
+  //  private static Connection con = null;
+    
+    
     
     public static Connection getConnection() {
-        String url = "jdbc:mysql://localhost:3306/software2?user=root&password=root";
+         String url = "jdbc:mysql://localhost:3306/software2?user=root&password=root";
 
         Connection con = null;
         try {
@@ -20,5 +23,9 @@ public class DBConexion {
         }
         return con;
     }
-}
+        
+    }
+    
+    
+
 

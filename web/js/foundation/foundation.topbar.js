@@ -21,14 +21,14 @@
       Foundation.inherit(this, 'add_custom_rule register_media throttle');
       var self = this;
 
-      self.register_media('topbar-section', 'foundation-mq-topbar');
+      self.register_media('topbar', 'foundation-mq-topbar');
 
       this.bindings(method, options);
 
       self.S('[' + this.attr_name() + ']', this.scope).each(function () {
         var topbar = $(this),
             settings = topbar.data(self.attr_name(true) + '-init'),
-            section = self.S('section, .top-bar', this);
+            section = self.S('section, .top-bar-section', this);
         topbar.data('index', 0);
         var topbarContainer = topbar.parent();
         if (topbarContainer.hasClass('fixed') || self.is_sticky(topbar, topbarContainer, settings) ) {
@@ -44,7 +44,7 @@
           self.assemble(topbar);
         }
 
-        if (settings.is_hover) {//aquí modifiqué yo
+        if (settings.is_hover) {
           self.S('.has-dropdown', topbar).addClass('not-click');
         } else {
           self.S('.has-dropdown', topbar).removeClass('not-click');

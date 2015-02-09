@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="CasaSubastas2x" default="default" basedir=".">
-    <description>Builds, tests, and runs the project CasaSubastas2x.</description>
+<project name="CasaSubastasV03" default="default" basedir=".">
+    <description>Builds, tests, and runs the project CasaSubastasV03.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

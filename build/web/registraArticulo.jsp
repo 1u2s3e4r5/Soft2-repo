@@ -14,7 +14,6 @@
         <link href='http://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:800,400' rel='stylesheet' type='text/css'>
         
-        
     </head>
     
     <body class="registro">  <!--estilo a revisar -->
@@ -34,7 +33,7 @@
                         </div>
                     </div>
                 
-                <br/>    
+                <br>    
                 <div class="row">
                     
                     <div class="small-6 columns">
@@ -43,7 +42,7 @@
                         <input type="text" name="nombre" required size="50"></div>
                 </div>
                 
-                <br>
+                
                 <div class="row">
                     
                     <div class="small-6 columns">
@@ -91,7 +90,7 @@
                 </div>
                     
                 <div class="row"> 
-                    <div class="small-12 columns ele"><center><button class='colorb' type="submit">Registrar Ahora</button></center>
+                    <div class="small-12 columns ele"><center><button type="submit">Registrar Ahora</button></center>
                     </div>
                 </div>    
                 

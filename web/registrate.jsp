@@ -15,7 +15,7 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:800,400' rel='stylesheet' type='text/css'>
         
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-         
+
         
        
        
@@ -48,7 +48,6 @@
                 <p class="welcome">¡Bienvenido a Casa de Subastas!</p>
                 <form action="s04" method="post">
                   
-                  
                     <div class="row collapse">        
                     <div class="small-2 small-push-4 columns">
                       <span class="prefix"><i class="fa fa-quote-right fa-2x nada"></i></span>
@@ -56,8 +55,8 @@
                     <div class="small-6  columns">
                       <input type="text" name ="DNI" placeholder="DNI" required>
                     </div>  
-                      
-                         
+                          
+                          
                      
                   </div>
                     <div class="row collapse">
@@ -93,8 +92,7 @@
                       <input type="password"  name= "Password"placeholder="Password" required>
                     </div>
                   </div>
-                 <br/>
-                    <input type="submit" class="button small-push-5" value="Registrarse"/>
+                 <input type="submit" class="button small-push-5" value="Registrarse"/>
                 </form>
                 
               </div>

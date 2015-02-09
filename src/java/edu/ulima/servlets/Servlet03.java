@@ -2,10 +2,12 @@
 package edu.ulima.servlets;
 
 import edu.ulima.bd.ConexionDAO;
-import edu.ulima.clases.Subasta;
+import edu.ulima.clases.Articulo;
 import edu.ulima.clases.Usuario;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -38,17 +40,18 @@ public class Servlet03 extends HttpServlet {
         String tipos = request.getParameter("tipos");
          ConexionDAO g = new ConexionDAO();
           
-        Subasta s = new Subasta();
-        s.setVendedor(user);
+        Articulo a = new Articulo();
+        a.setVendedor(user);
         
-        s.setNombre(nombre);
-        s.setPrecioActual(precioB);
-        s.setPrecioBase(precioB);
-        s.setDescripcion(descripcion); 
-        s.setTipoSubasta(tipos);
+        a.setNombre(nombre);
         
+        a.setPrecioBase(precioB);
+        a.setDescripcion(descripcion); 
+        a.setTipo(tipos);
+        String timeStamp = new SimpleDateFormat("yy/MM/dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+        a.setFechaInicio(timeStamp);
        
-       boolean exito = g.registrarNuevaPiezas(s, filePart);
+       boolean exito = g.registrarNuevaPiezas(a, filePart);
         
        if (exito) {
        ses.setAttribute("msj2", "Pieza Registrada");

@@ -31,12 +31,6 @@
         
         <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
                 <ul class="side-nav">
-                <li><a href="#">Categoría</a></li>
-                <li><a href="#">Pequeño</a></li>
-                <li><a href="#">Mediano</a></li>
-                <li><a href="#">Grande</a></li>
-                <li><a href="#">Gigante</a></li>
-                <li class="divider"></li>
                 <li><a href="#">Precio</a></li>
                 <li><a href="#">Muy Barato</a></li>
                 <li><a href="#">Barato</a></li>

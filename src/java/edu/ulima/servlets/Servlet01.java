@@ -26,13 +26,18 @@ public class Servlet01 extends HttpServlet {
         
         ConexionDAO dao = new ConexionDAO();
         Usuario u  = dao.validarUsuario(username, password);
-        System.out.print(username);
+       // System.out.print(username);
         if (u == null){
             ses.setAttribute("error", "Error en username o password");
             response.sendRedirect("home.jsp");
         } else {
             ses.setAttribute("usuario", u);
+            //System.out.println(u.getTipo());
+            if (u.getTipo().equalsIgnoreCase("Cliente")){
             response.sendRedirect("homeUsuario.jsp");
+            }else{
+            response.sendRedirect("homeAdmin.jsp");
+            }
         }
         
         

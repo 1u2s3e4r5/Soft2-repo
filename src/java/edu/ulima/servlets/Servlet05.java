@@ -1,4 +1,4 @@
-//Registro
+//Comprar Creditos
 package edu.ulima.servlets;
 
 import edu.ulima.bd.ConexionDAO;
@@ -12,32 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet(name = "Servlet04", urlPatterns = {"/s04"})
-public class Servlet04 extends HttpServlet {
+@WebServlet(name = "Servlet05", urlPatterns = {"/s05"})
+public class Servlet05 extends HttpServlet {
 
-    
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession ses = request.getSession();
-        
-        String nombre = (String ) request.getParameter("Nombre");
-        Long DNI = Long.parseLong((String) request.getParameter("DNI"));
-        String apellido = (String ) request.getParameter("Apellido");
-        String pw = (String ) request.getParameter("Password");
-        String user = (String) request.getParameter("User");
-        Usuario u = new Usuario(DNI, nombre+" " + apellido, user , pw, 0, "Cliente");
-        
-        ConexionDAO g = new ConexionDAO();
-        boolean exito = g.registrarNuevoUsuario(u);
-        
-        if ( exito){
-        ses.setAttribute("usuario", u);
-        response.sendRedirect("homeUsuario.jsp");
-        }else {
-        ses.setAttribute("error", "DNI o username ya registrado");
-        response.sendRedirect("registrate.jsp");
-        }
+       HttpSession ses = request.getSession();
+       Usuario u = (Usuario) ses.getAttribute("usuario");
+       int creditosComprados = Integer.parseInt(request.getParameter("creditos"));
+       u.setCreditos(u.getCreditos() + creditosComprados);
+       ConexionDAO dao = new ConexionDAO();
+       dao.actualizarCreditos(u);
+       ses.setAttribute("cred","Se han agregado " + creditosComprados + "Créditos a su cuenta" );
+       response.sendRedirect("homeUsuario.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -9,13 +9,15 @@ public class Usuario {
     private String usuario;
     private String password;
     private int creditos;
+    private String tipo;
 
-    public Usuario(long DNI, String nombre, String usuario, String password, int creditos) {
+    public Usuario(long DNI, String nombre, String usuario, String password, int creditos, String tipo) {
         this.DNI = DNI;
         this.nombre = nombre;
         this.usuario = usuario;
         this.password = password;
         this.creditos = 0;
+        this.tipo=tipo;
     }
 
     public Usuario() {
@@ -23,6 +25,14 @@ public class Usuario {
 
     public long getDNI() {
         return DNI;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public void setDNI(long DNI) {

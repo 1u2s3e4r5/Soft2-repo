@@ -7,76 +7,85 @@ import java.util.List;
 
 public class Subasta {
     
-    private int Subasta;
-    private Usuario vendedor;
-    private String nombre;
-    private String descripcion;
-    private float precioBase;
+    private int idsubasta;
+    private Articulo articulo;
+    private String estado;
+    private String fechaInicio;
+    private String fechaFin;
     private float precioActual;
-    private Oferta mayorOferta;
-    private byte[] imagen;
-    private boolean disponible;
-    private String tipoSubasta;
-    private List<Oferta> ofertas;
+    private List<IOferta> ofertas;
 
-    public Subasta(int Subasta, Usuario vendedor, String descbreve, String descripcion, float precioBase, float precioActual, Oferta mayorOferta, byte[] imagen, boolean disponible, String tipoSubasta, List<Oferta> ofertas) {
-        this.Subasta = Subasta;
-        this.vendedor = vendedor;
-        this.nombre = descbreve;
-        this.descripcion = descripcion;
-        this.precioBase = precioBase;
+    public Subasta(int idsubasta, Articulo articulo, String estado, String fechaInicio, String fechaFin, float precioActual) {
+        this.idsubasta = idsubasta;
+        this.articulo = articulo;
+        this.estado = estado;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.precioActual = precioActual;
-        this.mayorOferta = mayorOferta;
-        this.imagen = imagen;
-        this.disponible = disponible;
-        this.tipoSubasta = tipoSubasta;
-        this.ofertas = ofertas;
+        ofertas = new ArrayList<>();
     }
 
     public Subasta() {
-       ofertas = new ArrayList<Oferta>();
     }
 
-    public int getSubasta() {
-        return Subasta;
+    public void agregarOferta(IOferta oferta){
+    for (IOferta o : ofertas){
+        if (o.getMayor().equalsIgnoreCase("true")){
+        o.nuevaOferta();
+        }
+    }
+    
+    ofertas.add(oferta);
+    
+    }
+    
+    public List<IOferta> getOfertas() {
+        return ofertas;
     }
 
-    public void setSubasta(int Subasta) {
-        this.Subasta = Subasta;
+    public void setOfertas(List<IOferta> ofertas) {
+        this.ofertas = ofertas;
     }
 
-    public Usuario getVendedor() {
-        return vendedor;
+    
+    public int getIdsubasta() {
+        return idsubasta;
     }
 
-    public void setVendedor(Usuario vendedor) {
-        this.vendedor = vendedor;
+    public void setIdsubasta(int idsubasta) {
+        this.idsubasta = idsubasta;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Articulo getArticulo() {
+        return articulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setArticulo(Articulo articulo) {
+        this.articulo = articulo;
     }
 
-  
-
-    public String getDescripcion() {
-        return descripcion;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public float getPrecioBase() {
-        return precioBase;
+    public String getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setPrecioBase(float precioBase) {
-        this.precioBase = precioBase;
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
     }
 
     public float getPrecioActual() {
@@ -86,47 +95,6 @@ public class Subasta {
     public void setPrecioActual(float precioActual) {
         this.precioActual = precioActual;
     }
-
-    public Oferta getMayorOferta() {
-        return mayorOferta;
-    }
-
-    public void setMayorOferta(Oferta mayorOferta) {
-        this.mayorOferta = mayorOferta;
-    }
-
-    public byte[] getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
-    }
-
-    public boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
-
-    public String getTipoSubasta() {
-        return tipoSubasta;
-    }
-
-    public void setTipoSubasta(String tipoSubasta) {
-        this.tipoSubasta = tipoSubasta;
-    }
-
-    public List<Oferta> getOfertas() {
-        return ofertas;
-    }
-
-    public void setOfertas(List<Oferta> ofertas) {
-        this.ofertas = ofertas;
-    }
-    
     
     
     
