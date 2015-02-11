@@ -28,7 +28,7 @@
         <!-- lista de articulos  -->
         <!-- Thumbnails -->
      
-            
+        <form action="servletiniciar2" method="post">
               <div class="row">
      
                  <div class="row">
@@ -53,16 +53,7 @@
                         </div>
                 </div>     
                 
-                <div class="row">
-                    
-                    <div class="small-6 columns">
-                        <p align="right"><font size=+2>Intervalo</font></p>
-                    </div>
-                        <div class="small-6 columns ela-left">
-                           <input type="number" name="intervalo" min="1" max="25" required ></div>
-                        <!--    <input type="text" name="descripcion" required size="20px">    -->
-                        </div>
-                </div>     
+                
                   
                   
                   
@@ -73,10 +64,10 @@
               </div>
                 <div class="row">
                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                        <center> <a href="homeAdmin.jsp" class="button round">Confirmar subasta</a></center>
+                        <center> <input type ="submit" value ="Confirmar subasta" class="button round"/></center>
                     </div>
                 </div>
-        
+              </form>
         <!-- Fin Thumbnails -->
      
         

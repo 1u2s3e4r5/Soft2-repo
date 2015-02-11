@@ -1,9 +1,30 @@
-
+<%@page import="edu.ulima.bd.*" %>
+<%@page import ="edu.ulima.clases.*" %>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="edu.ulima.clases.Usuario" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
+         <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+        if (u.getTipo().equalsIgnoreCase("Cliente")){
+        response.sendRedirect("homeUsuario.jsp");
+        }
+        
+        HttpSession ses = request.getSession(true);
+        ConexionDAO dao = new ConexionDAO();
+        
+        List<Subasta> lista = (List) ses.getAttribute("lista");
+        if(lista == null){
+            ses.setAttribute("listaM", dao.retornarTodasLosSubastasDisponibles());
+        }else{
+            ses.setAttribute("listaM", lista);
+            ses.setAttribute("lista",null);
+        }
+        
+        %>
+        
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -30,20 +51,20 @@
         <div class="row">
             <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
                 <ul class="side-nav">
-                <li><a href="#">Precio</a></li>
-                <li><a href="#">Muy Barato</a></li>
-                <li><a href="#">Barato</a></li>
-                <li><a href="#">Justo</a></li>
-                <li><a href="#">Ajustado</a></li>
-                <li><a href="#">Caro</a></li>
-                <li><a href="#">Muy Caro</a></li>
+               <li>Precio</li>
+                <li><a href="servletbuscar2?buscar=Bajo">0-100</a></li>
+                <li><a href="servletbuscar2?buscar=Medio">100-200</a></li>
+                <li><a href="servletbuscar2?buscar=Alto">200+</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Tipo de Subasta</a></li>
-                <li><a href="#">Directa</a></li>
-                <li><a href="#">Por centimos</a></li>
+                <li>Tipo de Subasta</li>
+                <li><a href="servletbuscar2?buscar=Directa">Directa</a></li>
+                <li><a href="servletbuscar2?buscar=PorCentimos">Por centimos</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Vendedor</a></li>
+                <li>Vendedor(usuario)</li>
+                <form method="post" action="vendedorservlet?type=admin">
                 <li><input type="text" name="vendedor"></li>
+                <input type="submit" value="Buscar"/>
+                </form>
               </ul>
                 
             </div>
@@ -56,110 +77,43 @@
             <dl class="sub-nav medium-centered fffblanco">
                 
                 <dt>Filter:</dt>
-                <dd class="active"><a href="#">All</a></dd>
-                <dd><a href="#">Activas</a></dd>
-                <dd><a href="#">No Iniciadas</a></dd>
-                <dd><a href="#">Terminadas</a></dd>
-                <dd><a href="#">Finalizadas</a></dd>
+                <dd class="active"><a href="servletbuscar2?buscar=All">All</a></dd>
+                <dd><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
+                <dd><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
+                <dd><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
+                <dd><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
                 <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
                
               </dl>
             </div>
-                  
-                  
+                  <form action="servletiniciar1" method ="post">
+                  <c:forEach var="i" items="${listaM}" varStatus="Counter">
+                      <c:if test="${Counter.count == (totalLista)}">
+                          <div class="large-3 medium-4 small-6 columns end"> 
+                      </c:if>
+                      <c:if test="${Counter.count != (totalLista)}">
+                          <div class="large-3 medium-4 small-6 columns"> 
+                      </c:if>
+                       
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                          <div class="panel">
+                              <c:if test="${i.estado eq 'No Iniciado'}">
+                                <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
+                                 </c:if>
+                                <h6 class="subheader">${i.precioActual}</h6>
+                                </div>
+                        </div>
+                      
+                    </c:forEach>
      
-                <div class="large-3 medium-4 small-6 columns">
-                    
-                  <img src="http://placehold.it/1000x1000&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  
-                  <!-- colocar la etiqueta 'end' en el último artículo  -->
-                  <div class="large-3 medium-4 small-6 columns end">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5><input type="checkbox" name="feedback" value="sthg"/> Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  </div>
                 
                 <div class="row">
                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                        <center> <a href="homeAdmin2.jsp" class="button round">Iniciar subasta</a></center>
+                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
                     </div>
                     <br/>
                     <br/>
-                    
+                    </form>
                 </div>
                 
                 <div class="row">

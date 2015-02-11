@@ -1,10 +1,29 @@
-
+<%@page import="edu.ulima.bd.*" %>
+<%@page import ="edu.ulima.clases.*" %>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
+        <%
+        HttpSession ses = request.getSession(true);
+        ConexionDAO dao = new ConexionDAO();
+        
+        List<Subasta> lista = (List) ses.getAttribute("lista");
+        if(lista == null){
+            ses.setAttribute("listaM", dao.retornarTodasLosSubastasDisponibles());
+        }else{
+            ses.setAttribute("listaM", lista);
+            ses.setAttribute("lista",null);
+        }
+        
+        %>
+        
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
+        <c:set var="items" scope="session" value="${sessionScope.listaM}"/>
+        <c:set var="totalLista" value="${fn:length(items)}" />
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Home</title>
@@ -31,20 +50,20 @@
         
         <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
                 <ul class="side-nav">
-                <li><a href="#">Precio</a></li>
-                <li><a href="#">Muy Barato</a></li>
-                <li><a href="#">Barato</a></li>
-                <li><a href="#">Justo</a></li>
-                <li><a href="#">Ajustado</a></li>
-                <li><a href="#">Caro</a></li>
-                <li><a href="#">Muy Caro</a></li>
+                <li>Precio</li>
+                <li><a href="servletbuscar?buscar=Bajo">0-100</a></li>
+                <li><a href="servletbuscar?buscar=Medio">100-200</a></li>
+                <li><a href="servletbuscar?buscar=Alto">200+</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Tipo de Subasta</a></li>
-                <li><a href="#">Directa</a></li>
-                <li><a href="#">Por centimos</a></li>
+                <li>Tipo de Subasta</li>
+                <li><a href="servletbuscar?buscar=Directa">Directa</a></li>
+                <li><a href="servletbuscar?buscar=PorCentimos">Por centimos</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Vendedor</a></li>
+                <li>Vendedor(usuario)</li>
+                <form method="post" action="vendedorservlet?type=Obs">
                 <li><input type="text" name="vendedor"></li>
+                <input type="submit" value="Buscar"/>
+                </form>
               </ul>
                 
             </div>
@@ -52,110 +71,26 @@
         
         <div class="medium-10 large-10 columns">
         
-        <div class="row">
-            
-            <div class="medium-8 large-8 columns medium-centered hide-for-small-down">
-            <dl class="sub-nav medium-centered fffblanco">
-                <dt>Filter:</dt>
-                <dd class="active"><a href="#">All</a></dd>
-                <dd><a href="#">Activas</a></dd>
-                <dd><a href="#">No Iniciadas</a></dd>
-                <dd><a href="#">Destacadas</a></dd>
-                <dd><a href="#">Finalizadas</a></dd>
-                <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
-              </dl>
-            </div>
-            
-            
-            
-            
-            
-        </div>
+        
      
               <div class="row">
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/1000x1000&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-     
-                <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  <div class="large-3 medium-4 small-6 columns">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
-                  
-                  
-                  <!-- colocar la etiqueta 'end' en el último artículo  -->
-                  <div class="large-3 medium-4 small-6 columns end">
-                  <img src="http://placehold.it/500x500&text=Thumbnail">
-     
-                  <div class="panel">
-                    <h5>Item Name</h5>
-                    <h6 class="subheader">$000.00</h6>
-                  </div>
-                </div>
+                  <c:forEach var="i" items="${listaM}" varStatus="Counter">
+                      <c:if test="${Counter.count == (totalLista)}">
+                          <div class="large-3 medium-4 small-6 columns end"> 
+                      </c:if>
+                      <c:if test="${Counter.count != (totalLista)}">
+                          <div class="large-3 medium-4 small-6 columns"> 
+                      </c:if>
+                       
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=obs"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                          <div class="panel">
+                                <h5>${i.articulo.nombre}</h5>
+                                <h6 class="subheader">${i.precioActual}</h6>
+                                </div>
+                        </div>
+                      
+                    </c:forEach>
+               
                   
   
               </div>

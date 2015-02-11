@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConexion {
-  //  private static Connection con = null;
+    //private static Connection con = null;
     
     
     
@@ -21,10 +21,13 @@ public class DBConexion {
         } catch (SQLException e) {
         
         }
+       
+       
         return con;
-    }
+    
         
     }
+}
     
     
 

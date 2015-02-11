@@ -214,8 +214,11 @@ public class ConexionDAO {
         ResultSet rs = null;
         String sql = "Select * FROM subasta where Estado = 'No Iniciado' or Estado = 'Iniciado'";
         try {
+            
             con = DBConexion.getConnection();
+          
             ps = con.prepareStatement(sql);
+            
             rs = ps.executeQuery();
             while (rs.next()){
                 Subasta s = this.retornarSubasta(rs);
@@ -223,6 +226,7 @@ public class ConexionDAO {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+            
         } finally {
             try {
                 ps.close();
@@ -298,6 +302,38 @@ public class ConexionDAO {
         return subastas;
     }
       
+     public List<Subasta> retornarSubastasPorEstado(String tipo){
+        Connection con = null;
+        
+        PreparedStatement ps = null;
+        List<Subasta> subastas = new ArrayList<>();
+        ResultSet rs = null;
+        String sql = "Select * FROM subasta where subasta.estado= ? ";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, tipo);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Subasta s = this.retornarSubasta(rs);
+                subastas.add(s);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            
+                rs.close();
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return subastas;
+    }
+     
+     
      public List<Subasta> retornarSubastasPorPrecio(float menor, float mayor){
         Connection con = null;
         boolean exito = false;
@@ -341,7 +377,40 @@ public class ConexionDAO {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1,fechaini);
-            ps.setString(1,fechafin);
+            ps.setString(2,fechafin);
+            
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Subasta s = this.retornarSubasta(rs);
+                subastas.add(s);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            
+                rs.close();
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return subastas;
+    } 
+     
+     public List<Subasta> retornarSubastasPorUser(String user){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Subasta> subastas = new ArrayList<>();
+        ResultSet rs = null;
+        String sql = "Select s.idsubasta,s.idarticulo,s.estado,s.fechainicio,s.fechafin,s.precioactual FROM subasta s join articulo on s.idarticulo=articulo.idarticulo join usuario on articulo.dni = usuario.dni where username = ? and (Estado = 'No Iniciado' or Estado = 'Iniciado')";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1,user);
+           
             
             rs = ps.executeQuery();
             while (rs.next()){
@@ -432,6 +501,7 @@ public class ConexionDAO {
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()){
                 
@@ -461,8 +531,13 @@ public class ConexionDAO {
         String sql = "Select * from articulo where idarticulo = ?";
         try {
             con = DBConexion.getConnection();
+           
+            
             ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+          
             rs = ps.executeQuery();
+            
             while (rs.next()){
                 
                 a = this.retornarArticulo(rs);
@@ -493,12 +568,12 @@ public class ConexionDAO {
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Update subasta set Estado = 'Iniciado' where idsubasta = ?";
+        String sql = "Update subasta set Estado = 'Iniciado' , FechaInicio = ? where idsubasta = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
-            
-            ps.setInt(1,refSubasta.getIdsubasta());
+            ps.setString(1, refSubasta.getFechaInicio());
+            ps.setInt(2,refSubasta.getIdsubasta());
             ps.executeUpdate();
             exito = true;
         } catch (SQLException ex) {
@@ -712,7 +787,7 @@ public class ConexionDAO {
                 user.setUsuario(rs.getString("Username"));
                 user.setPassword(rs.getString("Password"));
                 user.setCreditos(rs.getInt("Creditos"));
-                user.setUsuario(rs.getString("Tipo"));
+                user.setTipo(rs.getString("Tipo"));
                 return user;
                 
              
