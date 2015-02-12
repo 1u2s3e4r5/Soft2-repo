@@ -50,6 +50,7 @@
         
         <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
                 <ul class="side-nav">
+                <li><a href="servletbuscar?buscar=All">Todos</a></li>
                 <li>Precio</li>
                 <li><a href="servletbuscar?buscar=Bajo">0-100</a></li>
                 <li><a href="servletbuscar?buscar=Medio">100-200</a></li>
@@ -82,10 +83,17 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=obs"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=obs"><img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%; height: 100%;"></a>
                           <div class="panel">
                                 <h5>${i.articulo.nombre}</h5>
-                                <h6 class="subheader">${i.precioActual}</h6>
+                              <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
+                               <h6 class="subheader">Precio Base</h6>
+                            <h6 class="subheader">${i.articulo.precioBase}</h6>
+                            
+                            
+                           
+                            <h6 class="subheader">Precio Actual</h6>
+                            <h6 class="subheader">${i.precioActual}</h6>
                                 </div>
                         </div>
                       

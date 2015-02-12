@@ -3,6 +3,7 @@ package edu.ulima.bd;
 
 import edu.ulima.clases.Oferta;
 import edu.ulima.clases.Articulo;
+import edu.ulima.clases.IOferta;
 import edu.ulima.clases.Subasta;
 import edu.ulima.clases.Usuario;
 import java.io.FileNotFoundException;
@@ -149,14 +150,14 @@ public class ConexionDAO {
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Insert into oferta (Subasta, Comprador, Monto, Fecha, Mayor) values(?,?,?,?,?)";
+        String sql = "Insert into oferta (idSubasta, dni, Monto, Fecha, Mayor) values(?,?,?,?,?)";
         
         String timeStamp = new SimpleDateFormat("yy/MM/dd-HH:mm:ss").format(Calendar.getInstance().getTime());
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setLong(1, refOferta.getComprador().getDNI());
-            ps.setInt(2, refOferta.getSubasta().getIdsubasta());
+            ps.setLong(2, refOferta.getComprador().getDNI());
+            ps.setInt(1, refOferta.getSubasta().getIdsubasta());
             ps.setFloat(3, refOferta.getMonto());
             ps.setString(4, timeStamp);
             ps.setString(5, "True");
@@ -436,14 +437,18 @@ public class ConexionDAO {
      Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
+       // System.out.println(refSubasta.getPrecioActual() + " 3");
+       // System.out.println(monto + " x");
         String sql = "Update subasta set PrecioActual= ? where idsubasta = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             ps.setFloat(1,refSubasta.getPrecioActual());
             ps.setInt(2,refSubasta.getIdsubasta());
+          //  System.out.println(ps.toString());
             ps.executeUpdate();
             exito = true;
+          //  System.out.println(refSubasta.getPrecioActual() + " 4");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -646,13 +651,13 @@ public class ConexionDAO {
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Update subasta set Creditos = ? where DNI = ?";
+        String sql = "Update usuario set Creditos = ? where DNI = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             
             ps.setInt(1,refUsuario.getCreditos());
-            ps.setLong(1,refUsuario.getDNI());
+            ps.setLong(2,refUsuario.getDNI());
             ps.executeUpdate();
             exito = true;
         } catch (SQLException ex) {
@@ -695,11 +700,11 @@ public class ConexionDAO {
      
      }
      
-     public List<Oferta> retornarOfertasporSubasta(int id){
+     public List<IOferta> retornarOfertasporSubasta(int id){
         Connection con = null;
         
         PreparedStatement ps = null;
-        List<Oferta> ofertas = new ArrayList<>();
+        List<IOferta> ofertas = new ArrayList<>();
         ResultSet rs = null;
         String sql = "Select * FROM oferta where idsubasta = ?";
         try {
@@ -740,7 +745,7 @@ public class ConexionDAO {
                 s.setFechaInicio(rs.getString("FechaInicio"));
                 s.setFechaFin(rs.getString("FechaFin"));
                 s.setPrecioActual(rs.getFloat("PrecioActual"));
-                
+                //s.setOfertas(this.retornarOfertasporSubasta(s.getIdsubasta()));
                 return s;
      }
      

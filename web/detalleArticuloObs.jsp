@@ -61,22 +61,14 @@
             <div class="off-canvas-wrap" data-offcanvas>
                   <div class="inner-wrap">
                       <nav class="tab-bar">
-                         <section class="left-small">
-                               <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
-                           </section>
+                         
 
                            <section class="middle tab-bar-section">
                                <h1 class="title">${i.articulo.nombre}</h1>
                           </section>
                       </nav>
 
-              <aside class="left-off-canvas-menu">
-                 <ul class="off-canvas-list">
-                     <li><label><c:out value="${i.articulo.nombre}"></c:out></label></li>
-                     <li><a href="#">The Psychohistorians</a></li>
-                     <li><a href="#">...</a></li>
-                 </ul>
-              </aside>
+              
 
          <section class="main-section">
           <p><c:out value="${i.articulo.descripcion}"></c:out></p>
@@ -85,6 +77,8 @@
           <h6 class="subheader"><c:out value="${i.precioActual}"></c:out></h6>
             <h5>Precio</h5>
             <h6 class="subheader"><c:out value="${i.articulo.precioBase}"></c:out></h6>
+            <h5>Tipo de Subasta</h5>
+            <h6 class="subheader"><c:out value="${i.articulo.tipo}"></c:out></h6>
             <h5>Vendedor</h5>
             <h6 class="subheader"><c:out value="${i.articulo.vendedor.nombre}"></c:out></h6>
             <h5>Usuario</h5>

@@ -48,7 +48,7 @@ public class Oferta implements IOferta {
     public void setSubasta(Subasta subasta) {
         this.subasta = subasta;
     }
-
+    @Override
     public float getMonto() {
         return monto;
     }
@@ -78,10 +78,15 @@ public class Oferta implements IOferta {
     public void nuevaOferta() {
         ConexionDAO g = new ConexionDAO();
         g.actualizarOferta(this.idoferta);
-        this.subasta.setPrecioActual(this.getMonto());
-        g.actualizarPrecio(this.subasta);
+        
+//        g.actualizarPrecio(this.subasta);
     }
     
+    @Override
+    public boolean registrar(){
+    ConexionDAO g = new ConexionDAO();
+    return g.registrarOferta(this);
+    }
     
     
 }

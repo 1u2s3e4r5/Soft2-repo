@@ -21,11 +21,22 @@ public class Servlet05 extends HttpServlet {
        HttpSession ses = request.getSession();
        Usuario u = (Usuario) ses.getAttribute("usuario");
        int creditosComprados = Integer.parseInt(request.getParameter("creditos"));
+       if (creditosComprados < 15 || creditosComprados >300){
+       ses.setAttribute("cred","Error en la Compra, solo se permite comprar entre 15 a 300 creditos" );
+       response.sendRedirect("compraCreditos.jsp");
+       } else {
+       
        u.setCreditos(u.getCreditos() + creditosComprados);
        ConexionDAO dao = new ConexionDAO();
-       dao.actualizarCreditos(u);
-       ses.setAttribute("cred","Se han agregado " + creditosComprados + "Créditos a su cuenta" );
+       boolean exito = dao.actualizarCreditos(u);
+       if (exito) {
+           ses.setAttribute("cred","Se han agregado " + creditosComprados + " créditos a su cuenta" );
        response.sendRedirect("homeUsuario.jsp");
+       }else {
+       ses.setAttribute("cred","Error en la Compra" );
+       response.sendRedirect("compraCreditos.jsp");
+            }
+       }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

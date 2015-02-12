@@ -1,6 +1,7 @@
 
 package edu.ulima.clases;
 
+import edu.ulima.bd.ConexionDAO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,12 @@ public class Subasta {
     public Subasta() {
     }
 
-    public void agregarOferta(IOferta oferta){
+    public boolean  agregarOferta(IOferta oferta){
+    this.setPrecioActual(oferta.getMonto());
+    ConexionDAO dao = new ConexionDAO();
+    //System.out.println(this.getPrecioActual() + " 1");
+    dao.actualizarPrecio(this);
+    //System.out.println(this.getPrecioActual() + " 2");
     for (IOferta o : ofertas){
         if (o.getMayor().equalsIgnoreCase("true")){
         o.nuevaOferta();
@@ -36,6 +42,7 @@ public class Subasta {
     }
     
     ofertas.add(oferta);
+    return oferta.registrar();
     
     }
     

@@ -61,30 +61,41 @@
             <div class="off-canvas-wrap" data-offcanvas>
                   <div class="inner-wrap">
                       <nav class="tab-bar">
+                          <c:if test="${i.estado eq 'Iniciado'}">
                          <section class="left-small">
                                <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
                            </section>
+                         </c:if>
 
                            <section class="middle tab-bar-section">
                                <h1 class="title">${i.articulo.nombre}</h1>
                           </section>
                       </nav>
-
+                <c:if test="${i.estado eq 'Iniciado'}">
               <aside class="left-off-canvas-menu">
                  <ul class="off-canvas-list">
                      <li><label><c:out value="${i.articulo.nombre}"></c:out></label></li>
-                     <li><a href="#">The Psychohistorians</a></li>
-                     <li><a href="#">...</a></li>
+                     <form action="servletofertar?idsubasta=${i.idsubasta}" method="post">
+                     <li>Realizar una oferta</li>
+                     <c:if test="${i.articulo.tipo eq 'Directa'}">
+                     <li><input type="text" name="monto" placeholder="Ingresar Monto"/></li>
+                     </c:if>
+                     <li><input type="submit" value="Ofertar"/></li>
+                     </form>
                  </ul>
               </aside>
-
+                </c:if>
          <section class="main-section">
           <p><c:out value="${i.articulo.descripcion}"></c:out></p>
           <div class="panel">
+          
             <h5>Precio Actual</h5>
           <h6 class="subheader"><c:out value="${i.precioActual}"></c:out></h6>
-            <h5>Precio</h5>
+          
+            <h5>Precio Base</h5>
             <h6 class="subheader"><c:out value="${i.articulo.precioBase}"></c:out></h6>
+            <h5>Tipo de Subasta</h5>
+            <h6 class="subheader"><c:out value="${i.articulo.tipo}"></c:out></h6>
             <h5>Vendedor</h5>
             <h6 class="subheader"><c:out value="${i.articulo.vendedor.nombre}"></c:out></h6>
             <h5>Usuario</h5>

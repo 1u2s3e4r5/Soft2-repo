@@ -95,12 +95,22 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
                               <c:if test="${i.estado eq 'No Iniciado'}">
                                 <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
                                  </c:if>
-                                <h6 class="subheader">${i.precioActual}</h6>
+                               <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
+                             
+                            <h6 class="subheader">Precio Base</h6>
+                            <h6 class="subheader">${i.articulo.precioBase}</h6>
+                            
+                            
+                           
+                            <h6 class="subheader">Precio Actual</h6>
+                            <h6 class="subheader">${i.precioActual}</h6>
+                            
+                                </div>
                                 </div>
                         </div>
                       
