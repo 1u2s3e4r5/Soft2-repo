@@ -20,10 +20,12 @@ public class Servlet05 extends HttpServlet {
             throws ServletException, IOException {
        HttpSession ses = request.getSession();
        Usuario u = (Usuario) ses.getAttribute("usuario");
+       try{
+       
        int creditosComprados = Integer.parseInt(request.getParameter("creditos"));
        if (creditosComprados < 15 || creditosComprados >300){
        ses.setAttribute("cred","Error en la Compra, solo se permite comprar entre 15 a 300 creditos" );
-       response.sendRedirect("compraCreditos.jsp");
+       response.sendRedirect("homeUsuario.jsp");
        } else {
        
        u.setCreditos(u.getCreditos() + creditosComprados);
@@ -34,9 +36,13 @@ public class Servlet05 extends HttpServlet {
        response.sendRedirect("homeUsuario.jsp");
        }else {
        ses.setAttribute("cred","Error en la Compra" );
-       response.sendRedirect("compraCreditos.jsp");
+       response.sendRedirect("homeUsuario.jsp");
             }
        }
+    }catch (Exception e){
+        ses.setAttribute("cred","Error en la Compra" );
+       response.sendRedirect("homeUsuario.jsp");
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

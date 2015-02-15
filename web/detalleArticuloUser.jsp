@@ -53,7 +53,7 @@
                   </div>
          <!-- segunda seccion -->   
         <div class="large-5 columns">
-          <img src="Imagen?id=${i.articulo.idarticulo}">
+          <img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%">
         </div>
           <!-- tercera seccion -->   
         <div class="large-5 columns">

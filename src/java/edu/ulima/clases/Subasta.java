@@ -88,8 +88,8 @@ public class Subasta {
     }
 
     public String getFechaFin() {
-        return fechaFin;
-    }
+        return fechaFin; 
+   }
 
     public void setFechaFin(String fechaFin) {
         this.fechaFin = fechaFin;

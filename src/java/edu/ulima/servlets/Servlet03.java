@@ -58,11 +58,11 @@ public class Servlet03 extends HttpServlet {
        response.sendRedirect("homeUsuario.jsp");
        } else {
        ses.setAttribute("msj", "Error en registro");
-       response.sendRedirect("registraArticulo.jsp");
+       response.sendRedirect("homeUsuario.jsp");
        }
         }catch (Exception e){
          ses.setAttribute("msj", "Error en registro");
-       response.sendRedirect("registraArticulo.jsp");
+       response.sendRedirect("homeUsuario.jsp");
         }
             
         

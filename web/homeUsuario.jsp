@@ -4,6 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="edu.ulima.clases.Usuario" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,12 +28,13 @@
         }
         }
         %>
-        
+        <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="msj" scope="session" value="${sessionScope.msj}"/>
          <c:set var="cred" scope="session" value="${sessionScope.cred}"/>
         <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
         <c:set var="msj2" scope="session" value="${sessionScope.msj2}"/>
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
+        
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Home</title>
@@ -67,7 +69,7 @@
 <div class="tabs-content">
   <div class="content active" id="panel11">
       <!-- Inicio Content 1-->
-     <p>In Progress...</p>
+     
      
      <div class="row">
             <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
@@ -354,19 +356,17 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
-                              <c:if test="${i.articulo.tipo!='Directa'}">
-                            <h6 class="subheader">Precio Base</h6>
+                              <h6 class="subheader">Precio Base</h6>
                             <h6 class="subheader">${i.articulo.precioBase}</h6>
-                            </c:if>
                             
-                            <c:if test="${i.articulo.tipo eq 'Directa'}">
+                            
+                           
                             <h6 class="subheader">Precio Actual</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
-                            </c:if>
                         </div>
                                </div>
                       

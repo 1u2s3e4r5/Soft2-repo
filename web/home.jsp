@@ -72,9 +72,18 @@
         
         <div class="medium-10 large-10 columns">
         
-        
+            <div class="row">
+   
+                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
+                      
+                      <dl class="sub-nav medium-centered fffblanco">
+                      <dt>Filter:</dt>
+                <dd class="active"><a href="servletbuscar?buscar=All">All</a></dd>
+                <dd><a href="servletbuscar?buscar=Activas">Activas</a></dd>
+                <dd><a href="servletbuscar?buscar=NoIniciadas">No Iniciadas</a></dd>
+                      </dl>
+                  </div>
      
-              <div class="row">
                   <c:forEach var="i" items="${listaM}" varStatus="Counter">
                       <c:if test="${Counter.count == (totalLista)}">
                           <div class="large-3 medium-4 small-6 columns end"> 

@@ -4,6 +4,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="edu.ulima.clases.Usuario" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,7 +26,7 @@
         }
         
         %>
-        
+           <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -111,7 +113,7 @@
                             <h6 class="subheader">${i.precioActual}</h6>
                             
                                 </div>
-                                </div>
+                                
                         </div>
                       
                     </c:forEach>
