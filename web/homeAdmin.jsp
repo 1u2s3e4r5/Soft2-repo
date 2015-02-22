@@ -48,7 +48,32 @@
         <br>
         <br>
     
-        <h1 align="center">Iniciar Subasta (paso 1)</h1>
+
+        <!-- segun la pestaÃ±a seleccionada -->
+        <%
+        int filters=(Integer)request.getSession().getAttribute("filters");
+        switch(filters){
+            case 2:  %>
+        <h1 align="center">Cerrar Subasta (Único paso)</h1>
+        <% break;
+            case 1:%>       
+         <h1 align="center">Iniciar Subasta (paso 1)</h1>  
+         <% break;
+            case 3:%>  
+          <h1 align="center">Finalizar Subasta (Único paso)</h1>  
+          <% break;
+            case 4:%> 
+           <h1 align="center">Subasta Finalizadas</h1>  
+           <% break;
+            case 0:%> 
+           <h1 align="center">Artículos</h1>   
+           <% break;
+            case 5:%> 
+            <h1 align="center">Subastas</h1>  
+        <% break;    
+        }    
+        %>
+
         
         
         <!-- lista de articulos  -->
@@ -82,13 +107,67 @@
             <dl class="sub-nav medium-centered fffblanco">
                 
                 <dt>Filter:</dt>
-                <dd class="active"><a href="servletbuscar2?buscar=All">All</a></dd>
-                <dd><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
-                <dd><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
-                <dd><a href="servletbuscar2?buscar=PorIniciar">Por Iniciar</a></dd>
-                <dd><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
-                <dd><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
+                <% HttpSession ses=request.getSession(true);
+        
+                    switch(filters){  
+                    case 5:
+                    ses.setAttribute("active5", "active");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active0", "");
+                    break; 
+                    case 2:
+                    ses.setAttribute("active2", "active");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active5", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active0", "");
+                        break;
+                    case 1:
+                    ses.setAttribute("active1", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active5", ""); 
+                    ses.setAttribute("active0", "");
+                        break;
+                    case 3:
+                    ses.setAttribute("active3", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active5", ""); 
+                    ses.setAttribute("active0", "");
+                        break;
+                    case 4:
+                    ses.setAttribute("active4", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active5", "");  
+                    ses.setAttribute("active0", "");
+                        break;
+                    case 0:
+                    ses.setAttribute("active0", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active5", "");  
+                    ses.setAttribute("active4", "");
+                        break;    
+                        
+                } %>
+                <dd class="${active5}"><a href="servletbuscar2?buscar=All">All</a></dd>
+                <dd class="${active2}"><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
+                <dd class="${active1}"><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
+                <dd class="${active0}"><a href="servletbuscar2?buscar=PorIniciar">Por Iniciar</a></dd>
+                <dd class="${active3}"><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
+                <dd class="${active4}"><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
                 <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
+
                
               </dl>
             </div>
@@ -103,7 +182,7 @@
                        
                               <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
-                              <c:if test="${i.estado eq 'No Iniciado'}">
+                              <c:if test="${sessionScope.filters eq 1 or sessionScope.filters eq 2}">
                                 <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
                                  </c:if>
                                <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -128,14 +207,43 @@
                     </c:forEach>
      
                 
-                <div class="row">
-                    <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
+                <!-- segun la pestaÃ±a seleccionada -->
+                            <%
+                    //String filters=(String)request.getSession().getAttribute("filters");
+                    switch(filters){
+                        case 2:  %>
+                    <div class="row">
+                                    <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                                        <center> <input type="submit" value ="Cerrar subasta" class="button round"></center>
+                                    </div>  <br/>  <br/>
                     </div>
+                    <% break;
+                        case 1:%>       
+                     <div class="row">
+                                    <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
+                                    </div>  <br/>  <br/>
+                    </div>  
+
+                     <% break;
+                        case 3:%>  
+                      <div class="row">
+                                    <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                                        <center> <input type="submit" value ="Finalizar subasta" class="button round"></center>
+                                    </div>  <br/>  <br/>
+                    </div>   
+
+
+
+                    <% break;    
+                    }    
+                    %>
+
+                              
                     <br/>
                     <br/>
                     </form>
-                </div>
+                
                 
                 <div class="row">
                     <div class="pagination-centered">

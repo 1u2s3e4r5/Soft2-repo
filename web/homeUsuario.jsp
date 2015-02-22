@@ -64,7 +64,8 @@
   <li class="tab-title active"><a href="#panel11">Consultar Subastas</a></li>
   <li class="tab-title"><a href="#panel21">Registrar Articulo</a></li>
   <li class="tab-title"><a href="#panel31">Comprar Creditos</a></li>
-  <li class="tab-title"><a href="#panel41">En Construccion</a></li>
+  <li class="tab-title"><a href="#panel41">Mis Artículos</a></li>
+  <li class="tab-title"><a href="#panel51">Novedades</a></li> 
 </ul>
 <div class="tabs-content">
   <div class="content active" id="panel11">
@@ -155,6 +156,7 @@
             </div>
      <!-- Fin Content 1-->
   
+
   <div class="content" id="panel21">
       <!-- Inicio Content 2-->
        
@@ -319,27 +321,9 @@
   <div class="content" id="panel41">
       <!-- Inicio Content 4-->
       <div class="row">
-            <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
-                <ul class="side-nav">
-               <li>Precio</li>
-                <li><a href="servletbuscar3?buscar=Bajo">0-100</a></li>
-                <li><a href="servletbuscar3?buscar=Medio">100-200</a></li>
-                <li><a href="servletbuscar3?buscar=Alto">200+</a></li>
-                <li class="divider"></li>
-                <li>Tipo de Subasta</li>
-                <li><a href="servletbuscar3?buscar=Directa">Directa</a></li>
-                <li><a href="servletbuscar3?buscar=PorCentimos">Por centimos</a></li>
-                <li class="divider"></li>
-                <li>Vendedor(usuario)</li>
-                <form method="post" action="vendedorservlet?type=user">
-                <li><input type="text" name="vendedor"></li>
-                <input type="submit" value="Buscar"/>
-                </form>
-              </ul>
-                
-            </div>
             
-            <div class="medium-10 large-10 columns">
+            
+            <div class="medium-11 large-11 columns medium-centered">
 
               <div class="row">
    
@@ -396,8 +380,43 @@
         
             </div>
     <!-- Fin Content 4-->
-  </div>
+  </div>   
+  <div class="content" id="panel51">
+      <!-- Inicio Content 5-->
+      <div class="row">
+            Holaaaaaaaaaaaaaaaaaaa
+            
+            <div class="medium-11 large-11 columns medium-centered">
+
+              <div class="row">
+   
+                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
+                      
+                      <dl class="sub-nav medium-centered fffblanco">
+                      <dt>Filter:</dt>
+                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
+                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
+                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
+                      </dl>
+            </div>
+                  
+                  
+              </div>
+            
+            </div>
+            
+        </div>
+        
+            
+    <!-- Fin Content 5-->
+    </div>
+    
+  
+  
+     
+     
 </div>
+    
         <!-- FIN DE LOS TABS -->           
         <br>
         <br>

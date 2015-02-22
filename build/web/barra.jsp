@@ -1,8 +1,15 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="edu.ulima.bd.*" %>
+<%@page import ="edu.ulima.clases.*" %>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 <script src="/js/vendor/modernizr.js"></script>
+            <%
+            ConexionDAO act = new ConexionDAO();
+            act.revisarSubastasPorIniciar();
+            act.revisarSubastasPorTerminar();
             
+            %>
             <c:set var="usuario" scope="session" value="${sessionScope.usuario}"/>
             <c:if test="${usuario==null}">
             <table style ="width: 100%" class="lline row" align="top">            

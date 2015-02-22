@@ -25,6 +25,7 @@ public class ServletBuscarAdmin extends HttpServlet {
         String caso = (String) request.getParameter("buscar");
         ConexionDAO dao = new ConexionDAO();
         List<Subasta> lista = null;
+        int filters=0;
         switch (caso) {
             case "Bajo":
                 lista = dao.retornarSubastasPorPrecio(0, 100);
@@ -43,23 +44,30 @@ public class ServletBuscarAdmin extends HttpServlet {
                 break;
             case "All":
                 lista = dao.retornarTodasLosSubastasDisponibles();
+                filters=5;
                 break;
             case "Activas":
                 lista = dao.retornarSubastasPorEstado("Iniciado");
+                filters=2;
                 break;
             case "NoIniciadas":
                 lista = dao.retornarSubastasPorEstado("No Iniciado");
+                filters=1;
                 break;
             case "Terminado":
                 lista = dao.retornarSubastasPorEstado("Terminado");
+                filters=3;
                 break;   
             case "Finalizado":
                 lista = dao.retornarSubastasPorEstado("Finalizado");
+                filters=4;
                 break; 
             case "PorIniciar":
             lista = dao.retornarSubastasPorEstado("Por Iniciar");
+            filters=0;
             break; 
        }
+        ses.setAttribute("filters", filters);
         ses.setAttribute("lista", lista);
         response.sendRedirect("homeAdmin.jsp");
     }

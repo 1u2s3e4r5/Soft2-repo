@@ -64,8 +64,8 @@
   <li class="tab-title active"><a href="#panel11">Consultar Subastas</a></li>
   <li class="tab-title"><a href="#panel21">Registrar Articulo</a></li>
   <li class="tab-title"><a href="#panel31">Comprar Creditos</a></li>
-  <li class="tab-title"><a href="#panel41">Mis artículos</a></li>
-  <li class="tab-title"><a href="#panel51">Novedades</a></li>
+  <li class="tab-title"><a href="#panel41">Mis Artículos</a></li>
+  <li class="tab-title"><a href="#panel51">Novedades</a></li> 
 </ul>
 <div class="tabs-content">
   <div class="content active" id="panel11">
@@ -104,6 +104,7 @@
                 <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
                 <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
                 <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
+                 <dd><a href="servletbuscar3?buscar=PorIniciar">Por Iniciar</a></dd>
                       </dl>
             </div>
                   
@@ -119,13 +120,17 @@
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
-                              <h6 class="subheader">Precio Base</h6>
+                               <h6 class="subheader">Precio Base:</h6>
                             <h6 class="subheader">${i.articulo.precioBase}</h6>
                             
-                            
-                           
-                            <h6 class="subheader">Precio Actual</h6>
+                           <h6 class="subheader">Precio Actual:</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>    
                         </div>
                                </div>
                       
@@ -150,8 +155,8 @@
         
             </div>
      <!-- Fin Content 1-->
+  
 
- 
   <div class="content" id="panel21">
       <!-- Inicio Content 2-->
        
@@ -329,7 +334,6 @@
                 <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
                 <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
                 <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
-                <dd><a href="servletbuscar3?buscar=NoIniciadas">Artículos</a></dd>
                       </dl>
             </div>
                   
@@ -376,89 +380,43 @@
         
             </div>
     <!-- Fin Content 4-->
-  </div>
-     
-     <div class="content" id="panel51">
+  </div>   
+  <div class="content" id="panel51">
       <!-- Inicio Content 5-->
-        
-       
-         <div class="row">
-  <div class="small-6 large-8 columns medium-centered"> 
-      <p class="panel">
-            <strong class="show-for-medium-up">Muchas gracias por usar nuestros servicios. A continuacion ingrese sus datos personales de su tarjeta de preferencia para proceder con la compra de Creditos de Casa de Subastas. El precio por Credito es de 1 sol por Crédito</strong>
-      </p>
-  </div>
-</div>
+      <div class="row">
+            Holaaaaaaaaaaaaaaaaaaa
+            
+            <div class="medium-11 large-11 columns medium-centered">
 
- <br>
- <!-- asdasdasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
- <div class="large-7 medium-centered columns ">
- <form method="post" action="s05">
-     <div class="row">
-    <div class="large-4 columns">
-      <label>Nombre del Propietario
-        <input type="text" placeholder="Nombres" />
-      </label>
-    </div>
-    <div class="large-4 columns">
-      <label>Apellidos del Propietario
-        <input type="text" placeholder="Apellidos" />
-      </label>
-    </div>
-    <div class="large-4 columns">
-      <div class="row collapse">
-        <label>Codigo de seguridad</label>
-        <div class="small-3 columns">
-          <input type="text" placeholder="" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-12 columns">
-      <label>Ingrese numero de tarjeta:
-        <input type="text" placeholder="xxxx-xxxx-xxxx-xxxx" />
-      </label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-12 columns">
-      <label>Tarjeta de credito:
-        <select>
-          <option value="VISA">VISA</option>
-          <option value="MasterCard">MasterCard</option>
-        </select>
-      </label>
-    </div>
-  </div>
-  <div class="row">
- <div class="large-4 columns">
-      <div class="row collapse">
-        <label>Creditos a Comprar</label>
-        <div class="small-3 columns">
-          <input type="text" placeholder="" name="creditos"/>
-        </div>
-      </div>
-    </div>
-  </div>
-     <div class="row">
-              <div class="large-4 columns">
-                <input type ="submit" value ="Comprar" class="postfix button right-align expand"/>
-                </form>
+              <div class="row">
+   
+                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
+                      
+                      <dl class="sub-nav medium-centered fffblanco">
+                      <dt>Filter:</dt>
+                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
+                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
+                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
+                      </dl>
+            </div>
+                  
+                  
               </div>
-     </div>
-</form>
- </div>
-         
-         
-         
-         
-         <!-- Fin Content 5-->
+            
+            </div>
+            
+        </div>
+        
+            
+    <!-- Fin Content 5-->
+    </div>
+    
   
-  </div>
+  
      
-
-
+     
+</div>
+    
         <!-- FIN DE LOS TABS -->           
         <br>
         <br>

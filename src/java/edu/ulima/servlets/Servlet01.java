@@ -32,6 +32,7 @@ public class Servlet01 extends HttpServlet {
             response.sendRedirect("home.jsp");
         } else {
             ses.setAttribute("usuario", u);
+            ses.setAttribute("filters", 5);
             //System.out.println(u.getTipo());
             if (u.getTipo().equalsIgnoreCase("Cliente")){
             response.sendRedirect("homeUsuario.jsp");
