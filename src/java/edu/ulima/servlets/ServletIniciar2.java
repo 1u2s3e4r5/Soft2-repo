@@ -34,7 +34,7 @@ public class ServletIniciar2 extends HttpServlet {
         
         //
          sus.setFechaInicio(fechaInicio);
-        dao.iniciarSubasta(sus);
+        dao.porIniciarSubasta(sus);
         }
         
         response.sendRedirect("homeAdmin.jsp");

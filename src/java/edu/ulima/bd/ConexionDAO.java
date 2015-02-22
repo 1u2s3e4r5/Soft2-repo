@@ -14,9 +14,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.Part;
 
@@ -213,7 +215,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<Subasta> subastas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select * FROM subasta where Estado = 'No Iniciado' or Estado = 'Iniciado'";
+        String sql = "Select * FROM subasta where Estado = 'No Iniciado' or Estado = 'Iniciado' or Estado = 'Por Iniciar'";
         try {
             
             con = DBConexion.getConnection();
@@ -278,7 +280,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<Subasta> subastas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select * FROM subasta join articulo on subasta.idarticulo = articulo.idarticulo where articulo.tipo = ? and (Estado = 'No Iniciado' or Estado = 'Iniciado')";
+        String sql = "Select * FROM subasta join articulo on subasta.idarticulo = articulo.idarticulo where articulo.tipo = ? and (Estado = 'No Iniciado' or Estado = 'Iniciado' or Estado = 'Por Iniciar')";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -341,7 +343,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<Subasta> subastas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select * FROM subasta where subasta.PrecioActual between  ? and ? and (Estado = 'No Iniciado' or Estado = 'Iniciado')";
+        String sql = "Select * FROM subasta where subasta.PrecioActual between  ? and ? and (Estado = 'No Iniciado' or Estado = 'Iniciado' or Estado = 'Por Iniciar')";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -373,7 +375,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<Subasta> subastas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select * FROM subasta where subasta.FechaInicio between  ? and ? and (Estado = 'No Iniciado' or Estado = 'Iniciado')";
+        String sql = "Select * FROM subasta where subasta.FechaInicio between  ? and ? and (Estado = 'No Iniciado' or Estado = 'Iniciado' or Estado = 'Por Iniciar')";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -406,7 +408,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<Subasta> subastas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select s.idsubasta,s.idarticulo,s.estado,s.fechainicio,s.fechafin,s.precioactual FROM subasta s join articulo on s.idarticulo=articulo.idarticulo join usuario on articulo.dni = usuario.dni where username = ? and (Estado = 'No Iniciado' or Estado = 'Iniciado')";
+        String sql = "Select s.idsubasta,s.idarticulo,s.estado,s.fechainicio,s.fechafin,s.precioactual FROM subasta s join articulo on s.idarticulo=articulo.idarticulo join usuario on articulo.dni = usuario.dni where username = ? and (Estado = 'No Iniciado' or Estado = 'Iniciado' or Estado = 'Por Iniciar')";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -573,12 +575,38 @@ public class ConexionDAO {
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Update subasta set Estado = 'Iniciado' , FechaInicio = ? where idsubasta = ?";
+        String sql = "Update subasta set Estado = 'Iniciado'  where idsubasta = ?";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,refSubasta.getIdsubasta());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+     
+     }
+     
+     public boolean porIniciarSubasta(Subasta refSubasta){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Update subasta set Estado = 'Por Iniciar' , FechaInicio = ?, tiempo = ? where idsubasta = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, refSubasta.getFechaInicio());
-            ps.setInt(2,refSubasta.getIdsubasta());
+            ps.setInt(3,refSubasta.getIdsubasta());
+            ps.setInt(2, 300);
             ps.executeUpdate();
             exito = true;
         } catch (SQLException ex) {
@@ -733,7 +761,83 @@ public class ConexionDAO {
      }
      
      
+     public void revisarSubastasPorTerminar() throws ParseException{
+     List<Subasta> lista = new ArrayList<>();
+     lista = this.retornarSubastasPorEstado("Iniciado");
+     for (Subasta s : lista){
+     int tiempo = s.getTiempo();
+     String fecha = s.getFechaInicio();
+     SimpleDateFormat fmt = new SimpleDateFormat("yy/MM/dd-HH:mm:ss");
+     Date ini =  fmt.parse(fecha);
+      String timeStamp = new SimpleDateFormat("yy/MM/dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+     Date ahora = fmt.parse(timeStamp);
      
+     Calendar c = Calendar.getInstance();
+     c.setTime(ini);
+     c.add(Calendar.SECOND, tiempo);
+     
+     Date fin = c.getTime();
+     
+     if (ahora.compareTo(fin) > 0){
+     this.finalizarSubasta(s);
+     }
+     
+     }
+     
+     }
+     
+      public void revisarSubastasPorIniciar() throws ParseException{
+     List<Subasta> lista = new ArrayList<>();
+     lista = this.retornarSubastasPorEstado("Por Iniciar");
+     for (Subasta s : lista){
+     int tiempo = s.getTiempo();
+     String fecha = s.getFechaInicio();
+     SimpleDateFormat fmt = new SimpleDateFormat("yy/MM/dd-HH:mm:ss");
+     Date ini =  fmt.parse(fecha);
+      String timeStamp = new SimpleDateFormat("yy/MM/dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+     Date ahora = fmt.parse(timeStamp);
+     
+    
+     
+     if (ahora.compareTo(ini) > 0){
+     this.iniciarSubasta(s);
+     }
+     
+     }
+     
+     }
+     
+     public boolean agregarTiempoPorCentimos(Subasta refSubasta){
+     
+      Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Update subasta set tiempo = ? where idsubasta = ?";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            int tiempo = refSubasta.getTiempo();
+            tiempo +=60;
+            refSubasta.setTiempo(60);
+            ps.setInt(1, tiempo);
+            ps.setInt(2,refSubasta.getIdsubasta());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+     
+     
+     
+     }
      
      private Subasta retornarSubasta (ResultSet rs) throws SQLException{
      
@@ -745,6 +849,7 @@ public class ConexionDAO {
                 s.setFechaInicio(rs.getString("FechaInicio"));
                 s.setFechaFin(rs.getString("FechaFin"));
                 s.setPrecioActual(rs.getFloat("PrecioActual"));
+                s.setTiempo(rs.getInt("tiempo"));
                 //s.setOfertas(this.retornarOfertasporSubasta(s.getIdsubasta()));
                 return s;
      }

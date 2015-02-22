@@ -103,6 +103,7 @@
                 <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
                 <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
                 <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
+                 <dd><a href="servletbuscar3?buscar=PorIniciar">Por Iniciar</a></dd>
                       </dl>
             </div>
                   
@@ -118,13 +119,17 @@
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
-                              <h6 class="subheader">Precio Base</h6>
+                               <h6 class="subheader">Precio Base:</h6>
                             <h6 class="subheader">${i.articulo.precioBase}</h6>
                             
-                            
-                           
-                            <h6 class="subheader">Precio Actual</h6>
+                           <h6 class="subheader">Precio Actual:</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>    
                         </div>
                                </div>
                       

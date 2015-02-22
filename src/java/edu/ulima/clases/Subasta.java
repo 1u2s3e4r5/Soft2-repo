@@ -15,8 +15,9 @@ public class Subasta {
     private String fechaFin;
     private float precioActual;
     private List<IOferta> ofertas;
+    private int tiempo;
 
-    public Subasta(int idsubasta, Articulo articulo, String estado, String fechaInicio, String fechaFin, float precioActual) {
+    public Subasta(int idsubasta, Articulo articulo, String estado, String fechaInicio, String fechaFin, float precioActual, int tiempo) {
         this.idsubasta = idsubasta;
         this.articulo = articulo;
         this.estado = estado;
@@ -24,9 +25,18 @@ public class Subasta {
         this.fechaFin = fechaFin;
         this.precioActual = precioActual;
         ofertas = new ArrayList<>();
+        this.tiempo=tiempo;
     }
 
     public Subasta() {
+    }
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
     }
 
     public boolean  agregarOferta(IOferta oferta){
@@ -42,6 +52,9 @@ public class Subasta {
     }
     
     ofertas.add(oferta);
+    if (this.getArticulo().getTipo().equalsIgnoreCase("Por Centimos")){
+    dao.agregarTiempoPorCentimos(this);
+    }
     return oferta.registrar();
     
     }

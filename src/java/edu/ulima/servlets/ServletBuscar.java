@@ -55,6 +55,9 @@ public class ServletBuscar extends HttpServlet {
             case "Finalizado":
                 lista = dao.retornarSubastasPorEstado("Finalizado");
                 break; 
+            case "PorIniciar":
+            lista = dao.retornarSubastasPorEstado("Por Iniciar");
+            break; 
        }
         ses.setAttribute("lista", lista);
         response.sendRedirect("home.jsp");

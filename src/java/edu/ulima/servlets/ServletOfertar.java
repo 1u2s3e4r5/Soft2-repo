@@ -31,6 +31,9 @@ public class ServletOfertar extends HttpServlet {
        Subasta sus = dao.buscarSubastaPorID(idsub);
        sus.setOfertas(dao.retornarOfertasporSubasta(idsub));
        o.setSubasta(sus);
+       
+       if (sus.getEstado().equalsIgnoreCase("Iniciado")){
+       
        float monto;
        if (sus.getArticulo().getTipo().equalsIgnoreCase("Directa")){
        
@@ -74,7 +77,10 @@ public class ServletOfertar extends HttpServlet {
                      response.sendRedirect("homeUsuario.jsp"); 
                     
                     
-                }}
+                }}}else {
+                     ses.setAttribute("msjOferta", "La oferta ha expirado");
+                     response.sendRedirect("homeUsuario.jsp"); 
+       }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

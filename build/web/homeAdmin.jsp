@@ -4,6 +4,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="edu.ulima.clases.Usuario" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,7 +26,7 @@
         }
         
         %>
-        
+           <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -43,8 +45,27 @@
         <br>
         <br>
     
-        <h1 align="center">Iniciar Subasta (paso 1)</h1>
-        
+        <!-- segun la pestaña seleccionada -->
+        <%
+        int filters=(Integer)request.getSession().getAttribute("filters");
+        switch(filters){
+            case 2:  %>
+        <h1 align="center">Cerrar Subasta (único paso)</h1>
+        <% break;
+            case 1:%>       
+         <h1 align="center">Iniciar Subasta (paso 1)</h1>  
+         <% break;
+            case 3:%>  
+          <h1 align="center">Finalizar Subasta (único paso)</h1>  
+          <% break;
+            case 4:%> 
+           <h1 align="center">Subasta Finalizadas</h1>  
+           <% break;
+            case 5:%> 
+            <h1 align="center">Subastas</h1>  
+        <% break;    
+        }    
+        %>
         
         <!-- lista de articulos  -->
         <!-- Thumbnails -->
@@ -77,11 +98,48 @@
             <dl class="sub-nav medium-centered fffblanco">
                 
                 <dt>Filter:</dt>
-                <dd class="active"><a href="servletbuscar2?buscar=All">All</a></dd>
-                <dd><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
-                <dd><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
-                <dd><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
-                <dd><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
+                <% switch(filters){  
+                    case 5:
+                    ses.setAttribute("active5", "active");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                    break; 
+                    case 2:
+                    ses.setAttribute("active2", "active");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active5", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                        break;
+                    case 1:
+                    ses.setAttribute("active1", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active5", "");    
+                        break;
+                    case 3:
+                    ses.setAttribute("active3", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active4", "");
+                    ses.setAttribute("active5", "");      
+                        break;
+                    case 4:
+                    ses.setAttribute("active4", "active");
+                    ses.setAttribute("active2", "");
+                    ses.setAttribute("active3", "");
+                    ses.setAttribute("active1", "");
+                    ses.setAttribute("active5", "");  
+                        break;
+                } %>
+                <dd class="${active5}"><a href="servletbuscar2?buscar=All">All</a></dd>
+                <dd class="${active2}"><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
+                <dd class="${active1}"><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
+                <dd class="${active3}"><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
+                <dd class="${active4}"><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
                 <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
                
               </dl>
@@ -95,26 +153,66 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
-                              <c:if test="${i.estado eq 'No Iniciado'}">
+                              <c:if test="${sessionScope.filters eq 1 or sessionScope.filters eq 2}">
                                 <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
                                  </c:if>
-                                <h6 class="subheader">${i.precioActual}</h6>
+                               <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
+                             
+                            <h6 class="subheader">Precio Base</h6>
+                            <h6 class="subheader">${i.articulo.precioBase}</h6>
+                            
+                            
+                           
+                            <h6 class="subheader">Precio Actual</h6>
+                            <h6 class="subheader">${i.precioActual}</h6>
+                            
                                 </div>
+                                
                         </div>
                       
                     </c:forEach>
      
+                <!-- segun la pestaña seleccionada -->
+                <%
+        //String filters=(String)request.getSession().getAttribute("filters");
+        switch(filters){
+            case 2:  %>
+        <div class="row">
+                        <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                            <center> <input type="submit" value ="Cerrar subasta" class="button round"></center>
+                        </div>  <br/>  <br/>
+        </div>
+        <% break;
+            case 1:%>       
+         <div class="row">
+                        <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                            <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
+                        </div>  <br/>  <br/>
+        </div>  
+         
+         <% break;
+            case 3:%>  
+          <div class="row">
+                        <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
+                            <center> <input type="submit" value ="Finalizar subasta" class="button round"></center>
+                        </div>  <br/>  <br/>
+        </div>   
+            
+            
+            
+        <% break;    
+        }    
+        %>
                 
-                <div class="row">
-                    <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
-                    </div>
-                    <br/>
-                    <br/>
-                    </form>
-                </div>
+                
+                
+                
+                
+        
+        </form>
+                
                 
                 <div class="row">
                     <div class="pagination-centered">

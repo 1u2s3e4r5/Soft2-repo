@@ -10,6 +10,9 @@
 <html>
     <head>
          <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+         if(u==null){
+            response.sendRedirect("home.jsp");
+        }else{
         if (u.getTipo().equalsIgnoreCase("Cliente")){
         response.sendRedirect("homeUsuario.jsp");
         }
@@ -24,7 +27,7 @@
             ses.setAttribute("listaM", lista);
             ses.setAttribute("lista",null);
         }
-        
+         }
         %>
            <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
@@ -82,6 +85,7 @@
                 <dd class="active"><a href="servletbuscar2?buscar=All">All</a></dd>
                 <dd><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
                 <dd><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
+                <dd><a href="servletbuscar2?buscar=PorIniciar">Por Iniciar</a></dd>
                 <dd><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
                 <dd><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
                 <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
@@ -103,14 +107,19 @@
                                 <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
                                  </c:if>
                                <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
-                             
-                            <h6 class="subheader">Precio Base</h6>
+                               <h6 class="subheader">Precio Base:</h6>
                             <h6 class="subheader">${i.articulo.precioBase}</h6>
                             
                             
                            
-                            <h6 class="subheader">Precio Actual</h6>
+                            <h6 class="subheader">Precio Actual:</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>    
                             
                                 </div>
                                 
@@ -155,7 +164,7 @@
               </div>
             
             </div>
-            
+             </div>
             
                 
         
