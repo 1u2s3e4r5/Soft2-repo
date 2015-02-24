@@ -435,6 +435,40 @@ public class ConexionDAO {
         return subastas;
     } 
      
+     
+      public List<Subasta> retornarSubastasPorUserTodos(String user){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Subasta> subastas = new ArrayList<>();
+        ResultSet rs = null;
+        String sql = "Select s.idsubasta,s.idarticulo,s.estado,s.fechainicio,s.fechafin,s.precioactual,s.tiempo FROM subasta s join articulo on s.idarticulo=articulo.idarticulo join usuario on articulo.dni = usuario.dni where username = ?";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1,user);
+           
+            
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Subasta s = this.retornarSubasta(rs);
+                subastas.add(s);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            
+                rs.close();
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return subastas;
+    } 
+     
      public boolean actualizarPrecio(Subasta refSubasta){
      Connection con = null;
         boolean exito = false;
@@ -653,12 +687,12 @@ public class ConexionDAO {
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Update subasta set Estado = 'Finalizado' where idsubasta = ?";
+        String sql = "Update subasta set Estado = 'Finalizado', FechaFin = ? where idsubasta = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
-            
-            ps.setInt(1,refSubasta.getIdsubasta());
+            ps.setString(1, refSubasta.getFechaFin());
+            ps.setInt(2,refSubasta.getIdsubasta());
             ps.executeUpdate();
             exito = true;
         } catch (SQLException ex) {
@@ -779,6 +813,8 @@ public class ConexionDAO {
      Date fin = c.getTime();
      
      if (ahora.compareTo(fin) > 0){
+     String fechafin = fmt.format(fin);
+     s.setFechaFin(fechafin);
      this.finalizarSubasta(s);
      }
      

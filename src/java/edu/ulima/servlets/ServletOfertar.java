@@ -6,6 +6,9 @@ import edu.ulima.clases.Oferta;
 import edu.ulima.clases.Subasta;
 import edu.ulima.clases.Usuario;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +22,7 @@ public class ServletOfertar extends HttpServlet {
 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
        HttpSession ses = request.getSession();
        Usuario u = (Usuario) ses.getAttribute("usuario");
        
@@ -31,7 +34,7 @@ public class ServletOfertar extends HttpServlet {
        Subasta sus = dao.buscarSubastaPorID(idsub);
        sus.setOfertas(dao.retornarOfertasporSubasta(idsub));
        o.setSubasta(sus);
-       
+       dao.revisarSubastasPorTerminar();
        if (sus.getEstado().equalsIgnoreCase("Iniciado")){
        
        float monto;
@@ -95,7 +98,11 @@ public class ServletOfertar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletOfertar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -109,7 +116,11 @@ public class ServletOfertar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(ServletOfertar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

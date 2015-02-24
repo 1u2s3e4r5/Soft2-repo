@@ -50,7 +50,7 @@
                   
                     <div class="row collapse">        
                     <div class="small-2 small-push-4 columns">
-                      <span class="prefix"><i class="fa fa-quote-right fa-2x nada"></i></span>
+                      <span class="prefix"><i class="fa fa-quote-right fa-2x nada" style="color: rgb(0, 0, 0);"></i></span>
                     </div>
                     <div class="small-6  columns">
                       <input type="text" name ="DNI" placeholder="DNI" required>
@@ -62,7 +62,7 @@
                     <div class="row collapse">
                         <!--  <div class="small-4 columns"><span class="ocupa"></span></div>  -->
                     <div class="small-2 small-push-4 columns">
-                      <span class="prefix"><i class="fa fa-male fa-2x nada"></i></span>
+                      <span class="prefix"><i class="fa fa-male fa-2x nada" style="color: rgb(0, 0, 0);"></i></span>
                     </div>
                     <div class="small-6  columns">
                       <input type="text" name ="Nombre" placeholder="Nombre" required>
@@ -70,7 +70,7 @@
                   </div>
                   <div class="row collapse">
                     <div class="small-2 small-push-4 columns">
-                      <span class="prefix"><i class="fa fa-users fa-2x nada"></i></span>
+                      <span class="prefix"><i class="fa fa-users fa-2x nada" style="color: rgb(0, 0, 0);"></i></span>
                     </div>
                     <div class="small-6  columns">
                       <input type="text" name= "Apellido" placeholder="Apellido" required>
@@ -78,7 +78,7 @@
                   </div>
                   <div class="row collapse">
                     <div class="small-2 small-push-4 columns ">
-                      <span class="prefix"><i class="fa fa-user fa-2x nada"></i></span>
+                      <span class="prefix"><i class="fa fa-user fa-2x nada" style="color: rgb(0, 0, 0);"></i></span>
                     </div>
                     <div class="small-6 columns ">
                       <input type="text" name= "User" placeholder="User" required>
@@ -86,7 +86,7 @@
                   </div>
                   <div class="row collapse">
                     <div class="small-2 small-push-4 columns ">
-                      <span class="prefix"><i class="fa fa-unlock fa-2x nada"></i></span>
+                      <span class="prefix"><i class="fa fa-unlock fa-2x nada" style="color: rgb(0, 0, 0);"></i></span>
                     </div>
                     <div class="small-6 columns ">
                       <input type="password"  name= "Password"placeholder="Password" required>
@@ -97,7 +97,7 @@
                 
               </div>
             </div>
-           </div></p>
+           </div>
       </div>
     </section>
     

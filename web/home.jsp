@@ -7,6 +7,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Home</title>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/main2.css"/>
+    </head>
+    <body></body>
+        
+        <!-- franja superior -->    
+        <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
         <%
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -24,19 +38,6 @@
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <c:set var="items" scope="session" value="${sessionScope.listaM}"/>
         <c:set var="totalLista" value="${fn:length(items)}" />
-        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Home</title>
-        <link rel="stylesheet" href="css/foundation.css"/>
-        <link rel="stylesheet" href="css/normalize.css"/>
-        <link rel="stylesheet" href="css/main2.css"/>
-    </head>
-    <body></body>
-        
-        <!-- franja superior -->    
-        <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
                    
         <br>
         <br>

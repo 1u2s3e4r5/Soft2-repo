@@ -54,8 +54,8 @@ public class ServletBuscarAdmin extends HttpServlet {
                 lista = dao.retornarSubastasPorEstado("No Iniciado");
                 filters=1;
                 break;
-            case "Terminado":
-                lista = dao.retornarSubastasPorEstado("Terminado");
+            case "Concluido":
+                lista = dao.retornarSubastasPorEstado("Concluido");
                 filters=3;
                 break;   
             case "Finalizado":

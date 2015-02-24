@@ -26,9 +26,14 @@
             ses.setAttribute("listaM", lista);
             ses.setAttribute("lista",null);
         }
+        List<Subasta> listaP = dao.retornarSubastasPorUserTodos(u.getUsuario());
+                   ses.setAttribute("listaP", listaP);
+     
+        
         }
         %>
         <c:set var="totalLista" value="${fn:length(listaM)}" />
+        <c:set var="totalListaP" value="${fn:length(listaP)}" />
         <c:set var="msj" scope="session" value="${sessionScope.msj}"/>
          <c:set var="cred" scope="session" value="${sessionScope.cred}"/>
         <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
@@ -337,11 +342,11 @@
                       </dl>
             </div>
                   
-                  <c:forEach var="i" items="${listaM}" varStatus="Counter">
-                      <c:if test="${Counter.count == (totalLista)}">
+                  <c:forEach var="i" items="${listaP}" varStatus="Counter">
+                      <c:if test="${Counter.count == (totalListaP)}">
                           <div class="large-3 medium-4 small-6 columns end"> 
                       </c:if>
-                      <c:if test="${Counter.count != (totalLista)}">
+                      <c:if test="${Counter.count != (totalListaP)}">
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
@@ -356,6 +361,17 @@
                            
                             <h6 class="subheader">Precio Actual</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>
+                            <c:if test="${i.fechaFin != null}">
+                         <h6 class="subheader">Fecha Fin:</h6>
+                            <h6 class="subheader">${i.fechaFin}</h6>
+                        </c:if> 
                         </div>
                                </div>
                       
@@ -380,11 +396,11 @@
         
             </div>
     <!-- Fin Content 4-->
-  </div>   
+    
   <div class="content" id="panel51">
       <!-- Inicio Content 5-->
       <div class="row">
-            Holaaaaaaaaaaaaaaaaaaa
+          
             
             <div class="medium-11 large-11 columns medium-centered">
 

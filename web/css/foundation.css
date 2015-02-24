@@ -1165,7 +1165,8 @@ button, .button {
   color: #FFFFFF;
   transition: background-color 300ms ease-out; }
   button:hover, button:focus, .button:hover, .button:focus {
-    background-color: #007095; }
+    background-color: #007095;
+    text-decoration:none;   }
   button:hover, button:focus, .button:hover, .button:focus {
     color: #FFFFD0; }
   button.secondary, .button.secondary {
@@ -1744,7 +1745,8 @@ meta.foundation-mq-topbar {
   .top-bar .name {
    // height: 2.8125rem;
     margin: 0;
-   // font-size: 16px; }
+   // font-size: 16px; 
+   }
     .top-bar .name h1, .top-bar .name h2, .top-bar .name h3, .top-bar .name h4, .top-bar .name p, .top-bar .name span {
       line-height: 2.8125rem;
       font-size: 1.0625rem;
@@ -1773,6 +1775,7 @@ meta.foundation-mq-topbar {
       top: 50%;
       margin-top: -16px; }
       .top-bar .toggle-topbar.menu-icon a {
+        text-decoration:none;   
         height: 34px;
         line-height: 33px;
         padding: 0 2.5rem 0 0.9375rem;
@@ -1896,7 +1899,7 @@ meta.foundation-mq-topbar {
         background-color: #43AC6A;
         border-color: #368a55;
         color: #FFFFFF; }
-        .top-bar-section ul li > button.success:hover, .top-bar-section ul li > button.success:focus {
+        .top-bar-section ul li > .success:hover, .top-bar-section ul li > button.success:focus {
           background-color: #368a55; }
         .top-bar-section ul li > button.success:hover, .top-bar-section ul li > button.success:focus {
           color: #FFFFFF; }
@@ -4599,7 +4602,7 @@ dialog {
   -webkit-backface-visibility: hidden;
   position: relative;
   width: 100%;
-  overflow: hidden; }
+  overflow: auto; }
   .off-canvas-wrap.move-right, .off-canvas-wrap.move-left {
     min-height: 100%;
     -webkit-overflow-scrolling: touch; }
@@ -6138,7 +6141,3 @@ th.hide-for-touch {
 
   th.show-for-print {
     display: table-cell !important; } }
-
-.main-section {
-
-}
