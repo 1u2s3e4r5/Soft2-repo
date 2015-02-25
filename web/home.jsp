@@ -94,7 +94,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=obs"><img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%; height: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=obs"><img src="Imagen?id=${i.idsubasta}" style="width:100%; height: 100%;"></a>
                           <div class="panel">
                                 <h5>${i.articulo.nombre}</h5>
                               <h6>Tipo Subasta: ${i.articulo.tipo}</h6>

@@ -8,5 +8,7 @@ public interface IOferta {
     public float getMonto();
     public void nuevaOferta();
     public boolean registrar();
+    public Usuario getComprador();
+    
     
 }

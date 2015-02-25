@@ -9,7 +9,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-         
+            <%
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            if(u==null){
+            response.sendRedirect("home.jsp");
+            } else {
+            %>
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Home</title>
@@ -18,13 +23,15 @@
         <link rel="stylesheet" href="css/main2.css"/>
     </head>
     <body></body>
-        <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-         if(u==null){
-            response.sendRedirect("home.jsp");
-        }else{
+        <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
+    
+        <% 
+        
         if (u.getTipo().equalsIgnoreCase("Cliente")){
         response.sendRedirect("homeUsuario.jsp");
-        }
+        }else {
         
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -36,14 +43,14 @@
             ses.setAttribute("listaM", lista);
             ses.setAttribute("lista",null);
         }
-         }
+        }
+         
+            }
         %>
            <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <!-- franja superior -->    
-        <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
+        
                    
         <br>
         <br>
@@ -171,7 +178,7 @@
                
               </dl>
             </div>
-                  <form action="servletiniciar1" method ="post">
+                  <form action="servletiniciar1" method ="post" id="formC">
                   <c:forEach var="i" items="${listaM}" varStatus="Counter">
                       <c:if test="${Counter.count == (totalLista)}">
                           <div class="large-3 medium-4 small-6 columns end"> 
@@ -180,13 +187,15 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=admin"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
                               <c:if test="${sessionScope.filters eq 1}">
-                                <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
+                                <h5><input type="checkbox" name="feedback" value="${i.idsubasta}"/>${i.articulo.nombre}</h5>
                                  </c:if>
                                 <c:if test="${sessionScope.filters eq 4}">
-                                <h5><input type="checkbox" name="concluir" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
+                                
+                                <h5><input type="checkbox" name="concluir" value="${i.idsubasta}"/>${i.articulo.nombre}</h5>
+                                
                                  </c:if>
                                <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
                                <h6 class="subheader">Precio Base:</h6>
@@ -226,7 +235,7 @@
                         case 1:%>       
                      <div class="row">
                                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
+                                        <center> <input type="submit" value ="Iniciar Subasta" class="button round" name="action"></center>
                                     </div>  <br/>  <br/>
                     </div>  
 
@@ -234,7 +243,7 @@
                         case 4:%>  
                       <div class="row">
                                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                                        <center> <input type="submit" value ="Finalizar subasta" class="button round"></center>
+                                        <center> <input type="submit" value ="Concluir Subasta" class="button round" name="action"></center>
                                     </div>  <br/>  <br/>
                     </div>   
 
@@ -285,9 +294,7 @@
      
         
         
-        
-        
-   
+     
        
         
    

@@ -2,7 +2,9 @@
 package edu.ulima.servlets;
 
 import edu.ulima.bd.ConexionDAO;
+import edu.ulima.clases.Articulo;
 import edu.ulima.clases.Subasta;
+import edu.ulima.clases.Usuario;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,29 +14,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebServlet(name = "DetalleArticuloAdmin", urlPatterns = {"/detallearticuloadmin"})
-public class DetalleArticuloAdmin extends HttpServlet {
+@WebServlet(name = "ResubastarServlet", urlPatterns = {"/resubastarservlet"})
+public class ResubastarServlet extends HttpServlet {
 
-  
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
         HttpSession ses = request.getSession();
-        int id = Integer.parseInt(request.getParameter("idarticulo"));
-        String tipo= request.getParameter("type");
+        try{
+        
+        Usuario u = (Usuario) ses.getAttribute("usuario");
+        Float monto = Float.parseFloat(request.getParameter("nuevomonto"));
+        Subasta s = (Subasta)ses.getAttribute("detallearticuloadmin");
         ConexionDAO dao = new ConexionDAO();
-        Subasta s =dao.buscarSubastaPorID(id);
-        ses.setAttribute("detallearticuloadmin", s);
-         if (tipo.equalsIgnoreCase("admin")){
-            response.sendRedirect("detalleArticuloAdmin.jsp");
-         }else if(tipo.equalsIgnoreCase("obs")){
-            response.sendRedirect("detalleArticuloObs.jsp");
-         }else if (tipo.equalsIgnoreCase("propio")){
-            response.sendRedirect("detalleArticuloPropio.jsp");
-         }else {
-            response.sendRedirect("detalleArticuloUser.jsp");
-         }
+        
+        Articulo refArticulo = dao.buscarArticuloPorID(s.getArticulo().getIdarticulo());
+        refArticulo.setPrecioBase(monto);
+        dao.actualizarPrecioArticulo(refArticulo);
+        dao.resubastarSubasta(s);
+        
+        Subasta nuevo = new Subasta();
+        nuevo.setArticulo(s.getArticulo());
+        nuevo.setPrecioActual(monto);
+        nuevo.setEstado("No Iniciado");
+        dao.registrarSubasta(nuevo);
+        
+            ses.setAttribute("msj", "Articulo Resubastado");
+            response.sendRedirect("homeUsuario.jsp");
+            
+        }catch (Exception e){
+             ses.setAttribute("msj", "Error en la Resubasta");
+            response.sendRedirect("homeUsuario.jsp");
+           
+        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

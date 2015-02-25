@@ -3,7 +3,10 @@ package edu.ulima.bd;
 
 import edu.ulima.clases.Oferta;
 import edu.ulima.clases.Articulo;
+import edu.ulima.clases.Cobro;
 import edu.ulima.clases.IOferta;
+import edu.ulima.clases.Pago;
+import edu.ulima.clases.Premio;
 import edu.ulima.clases.Subasta;
 import edu.ulima.clases.Usuario;
 import java.io.FileNotFoundException;
@@ -499,6 +502,36 @@ public class ConexionDAO {
      
      }
      
+     public boolean actualizarPrecioArticulo(Articulo refArticulo){
+     Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+       // System.out.println(refSubasta.getPrecioActual() + " 3");
+       // System.out.println(monto + " x");
+        String sql = "Update articulo set PrecioBase= ? where idarticulo = ?";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setFloat(1,refArticulo.getPrecioBase());
+            ps.setInt(2,refArticulo.getIdarticulo());
+          //  System.out.println(ps.toString());
+            ps.executeUpdate();
+            exito = true;
+          //  System.out.println(refSubasta.getPrecioActual() + " 4");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+     
+     }
+     
      public Usuario buscarUsuarioPorDNI(long DNI){
      
         Connection con = null;
@@ -657,11 +690,11 @@ public class ConexionDAO {
      
      }
      
-    public boolean terminarSubasta(Subasta refSubasta){
+    public boolean concluirSubasta(Subasta refSubasta){
         Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
-        String sql = "Update subasta set Estado = 'Terminado' where idsubasta = ?";
+        String sql = "Update subasta set Estado = 'Concluido' where idsubasta = ?";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -709,6 +742,31 @@ public class ConexionDAO {
      
      }    
     
+     
+      public boolean resubastarSubasta(Subasta refSubasta){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Update subasta set Estado = 'Resubastado' where idsubasta = ?";
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,refSubasta.getIdsubasta());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+     
+     }  
      public boolean actualizarCreditos(Usuario refUsuario){
         Connection con = null;
         boolean exito = false;
@@ -768,7 +826,7 @@ public class ConexionDAO {
         PreparedStatement ps = null;
         List<IOferta> ofertas = new ArrayList<>();
         ResultSet rs = null;
-        String sql = "Select * FROM oferta where idsubasta = ?";
+        String sql = "Select * FROM oferta where idsubasta = ? order by monto desc";
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
@@ -875,6 +933,205 @@ public class ConexionDAO {
      
      }
      
+     public List<Premio> retornarPremiosPorUsuario(int idUsuario){
+     
+      Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Premio> premios = new ArrayList<>();
+        String sql = "select * from premio where usuario = ?";
+        ResultSet rs = null;
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, idUsuario);
+           
+            rs =ps.executeQuery();
+            while (rs.next()){
+                Premio p = this.retornarPremio(rs);
+                premios.add(p);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return premios;
+     
+     
+     
+     }
+   
+     public boolean insertarPremio(Premio refPremio){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Insert into premio (usuario, tipo, cantidad, subasta) values(?,?,?,?)";
+        
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, refPremio.getUsuario().getDNI());
+            ps.setString(2, refPremio.getTipo());
+            ps.setInt(3, refPremio.getCantidad());
+            ps.setInt(4, refPremio.getSubasta().getIdsubasta());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+       
+        } finally {
+            try {
+                ps.close();
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+
+     }
+     
+     public List<Pago> retornarPagosPorUsuario(int idUsuario){
+     
+      Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Pago> pagos = new ArrayList<>();
+        String sql = "select * from pago where vendedor = ?";
+        ResultSet rs = null;
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, idUsuario);
+           
+            rs =ps.executeQuery();
+            while (rs.next()){
+                Pago p = this.retornarPago(rs);
+                pagos.add(p);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return pagos;
+     
+     
+     
+     }
+     
+     
+     public boolean insertarPago(Pago refPago){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Insert into pago(vendedor, subasta,monto, fecha) values(?,?,?,?)";
+        
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, refPago.getVendedor().getDNI());
+            ps.setInt(2, refPago.getSubasta().getIdsubasta());
+            ps.setFloat(3, refPago.getMonto());
+            ps.setString(4, refPago.getFecha());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+       
+        } finally {
+            try {
+                ps.close();
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+
+     }
+     
+     public List<Cobro> retornarCobrosPorUsuario(int idUsuario){
+     
+      Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Cobro> cobros = new ArrayList<>();
+        String sql = "select * from cobro where comprador= ?";
+        ResultSet rs = null;
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            
+            ps.setInt(1, idUsuario);
+           
+            rs =ps.executeQuery();
+            while (rs.next()){
+                Cobro c = this.retornarCobro(rs);
+                cobros.add(c);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return cobros;
+     
+     
+     
+     }
+     
+     public boolean insertarCobro(Cobro refCobro){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        String sql = "Insert into cobro(comprador, subasta,monto, fecha) values(?,?,?,?)";
+        
+        try {
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, refCobro.getComprador().getDNI());
+            ps.setInt(2, refCobro.getSubasta().getIdsubasta());
+            ps.setFloat(3, refCobro.getMonto());
+            ps.setString(4, refCobro.getFecha());
+            ps.executeUpdate();
+            exito = true;
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+       
+        } finally {
+            try {
+                ps.close();
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return exito;
+
+     }
+     
      private Subasta retornarSubasta (ResultSet rs) throws SQLException{
      
          
@@ -939,4 +1196,37 @@ public class ConexionDAO {
              
      
      }
+     
+     private Premio retornarPremio(ResultSet rs) throws SQLException{
+                Premio premio = new Premio();
+                premio.setIdpremio(rs.getInt("idpremio"));
+                premio.setUsuario(this.buscarUsuarioPorDNI(rs.getInt("usuario")));
+                premio.setTipo(rs.getString("tipo"));
+                premio.setCantidad(rs.getInt("cantidad"));
+                premio.setSubasta(this.buscarSubastaPorID(rs.getInt("subasta")));
+              
+                return premio;
+           }
+     
+      private Pago retornarPago(ResultSet rs) throws SQLException{
+                Pago pago = new Pago();
+                pago.setIdPago(rs.getInt("idpago"));
+                pago.setVendedor(this.buscarUsuarioPorDNI(rs.getInt("vendedor")));
+                pago.setSubasta(this.buscarSubastaPorID(rs.getInt("subasta")));
+                pago.setFecha(rs.getString("fecha"));
+                pago.setMonto(rs.getFloat("monto"));
+              
+                return pago;
+           }
+      
+      private Cobro retornarCobro(ResultSet rs) throws SQLException{
+                Cobro cobro = new Cobro();
+                cobro.setIdCobro(rs.getInt("idcobro"));
+                cobro.setComprador(this.buscarUsuarioPorDNI(rs.getInt("comprador")));
+                cobro.setSubasta(this.buscarSubastaPorID(rs.getInt("subasta")));
+                cobro.setFecha(rs.getString("fecha"));
+                cobro.setMonto(rs.getFloat("monto"));
+              
+                return cobro;
+           }
 }

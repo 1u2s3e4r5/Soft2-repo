@@ -32,7 +32,7 @@ public class Oferta implements IOferta {
     public void setIdoferta(int idoferta) {
         this.idoferta = idoferta;
     }
-
+    @Override
     public Usuario getComprador() {
         return comprador;
     }

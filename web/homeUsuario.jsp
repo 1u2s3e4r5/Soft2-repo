@@ -8,13 +8,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-        if(u==null){
+        <%
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            if(u==null){
             response.sendRedirect("home.jsp");
-        }else{
+            } else {
+            %>
+        
+        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Home</title>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/main2.css"/>
+        <script src="js/vendor/modernizr.js"></script>
+    </head>
+    <body>   
+    
+    
+        
+        <!-- franja superior -->
+         <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
+        
+         <% 
+       
         if (u.getTipo().equalsIgnoreCase("Admin")){
         response.sendRedirect("homeAdmin.jsp");
-        }
+        }else{
         
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -29,7 +51,7 @@
         List<Subasta> listaP = dao.retornarSubastasPorUserTodos(u.getUsuario());
                    ses.setAttribute("listaP", listaP);
      
-        
+        }
         }
         %>
         <c:set var="totalLista" value="${fn:length(listaM)}" />
@@ -39,29 +61,12 @@
         <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
         <c:set var="msj2" scope="session" value="${sessionScope.msj2}"/>
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
-        
-        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Home</title>
-        <link rel="stylesheet" href="css/foundation.css"/>
-        <link rel="stylesheet" href="css/normalize.css"/>
-        <link rel="stylesheet" href="css/main2.css"/>
-        <script src="js/vendor/modernizr.js"></script>
-    </head>
-    <body>   
-    
-    <c:if test="${error!=null}">
+        <c:if test="${error!=null}">
         <script type="text/javascript">
                alert("${error}"); 
         </script>
         <c:remove var="error" scope="session"/>
-    </c:if>
-        
-        <!-- franja superior -->
-         <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
-        
+        </c:if>
                <h1 align="center">Bienvenido a Casa de Subastas</h1>
                <br>
         <!-- INICIO DE LOS TABS -->     
@@ -121,7 +126,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=user"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -332,15 +337,7 @@
 
               <div class="row">
    
-                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
-                      
-                      <dl class="sub-nav medium-centered fffblanco">
-                      <dt>Filter:</dt>
-                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
-                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
-                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
-                      </dl>
-            </div>
+                 
                   
                   <c:forEach var="i" items="${listaP}" varStatus="Counter">
                       <c:if test="${Counter.count == (totalListaP)}">
@@ -350,7 +347,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=propio"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
