@@ -22,6 +22,14 @@ public class Oferta implements IOferta {
         this.fecha=fecha;
     }
 
+    public Oferta(Usuario comprador, Subasta subasta, float monto) {
+        this.comprador = comprador;
+        this.subasta = subasta;
+        this.monto = monto;
+    }
+      
+    
+
     public Oferta() {
     }
 

@@ -8,32 +8,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-        if(u==null){
+        <%
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            if(u==null){
             response.sendRedirect("home.jsp");
-        }else{
-        if (u.getTipo().equalsIgnoreCase("Admin")){
-        response.sendRedirect("homeAdmin.jsp");
-        }
-        
-        HttpSession ses = request.getSession(true);
-        ConexionDAO dao = new ConexionDAO();
-        
-        List<Subasta> lista = (List) ses.getAttribute("lista");
-        if(lista == null){
-            ses.setAttribute("listaM", dao.retornarTodasLosSubastasDisponibles());
-        }else{
-            ses.setAttribute("listaM", lista);
-            ses.setAttribute("lista",null);
-        }
-        }
-        %>
-        <c:set var="totalLista" value="${fn:length(listaM)}" />
-        <c:set var="msj" scope="session" value="${sessionScope.msj}"/>
-         <c:set var="cred" scope="session" value="${sessionScope.cred}"/>
-        <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
-        <c:set var="msj2" scope="session" value="${sessionScope.msj2}"/>
-        <c:set var="error" scope="session" value="${sessionScope.error}"/>
+            } else {
+            %>
         
         <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -45,18 +25,58 @@
     </head>
     <body>   
     
-    <c:if test="${error!=null}">
-        <script type="text/javascript">
-               alert("${error}"); 
-        </script>
-        <c:remove var="error" scope="session"/>
-    </c:if>
+    
         
         <!-- franja superior -->
          <div>
         <jsp:include page="barra.jsp"/>
         </div>
         
+         <% 
+       
+        if (u.getTipo().equalsIgnoreCase("Admin")){
+        response.sendRedirect("homeAdmin.jsp");
+        }else{
+        
+        HttpSession ses = request.getSession(true);
+        ConexionDAO dao = new ConexionDAO();
+        
+        List<Subasta> lista = (List) ses.getAttribute("lista");
+        if(lista == null){
+            ses.setAttribute("listaM", dao.retornarTodasLosSubastasDisponibles());
+        }else{
+            ses.setAttribute("listaM", lista);
+            ses.setAttribute("lista",null);
+        }
+        List<Subasta> listaP = dao.retornarSubastasPorUserTodos(u.getUsuario());
+                   ses.setAttribute("listaP", listaP);
+        List<Oferta> ofertas = dao.retornarOfertasPorUser(u);
+                ses.setAttribute("listaO", ofertas);
+        List<Premio> premios = dao.retornarPremiosPorUsuario(u.getDNI());
+                ses.setAttribute("listaPremio", premios);
+        List<Cobro> cobros = dao.retornarCobrosPorUsuario(u.getDNI());
+                ses.setAttribute("listaCobro", cobros);
+        List<Pago> pagos = dao.retornarPagosPorUsuario(u.getDNI());
+                ses.setAttribute("listaPago", pagos);
+               
+        }
+        }
+        %>
+        <c:set var="totalLista" value="${fn:length(listaM)}" />
+        <c:set var="totalListaP" value="${fn:length(listaP)}" />
+        <c:set var="totalListaO" value="${fn:length(listaO)}" />
+        <c:set var="msj" scope="session" value="${sessionScope.msj}"/>
+        
+         <c:set var="cred" scope="session" value="${sessionScope.cred}"/>
+        <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
+        <c:set var="msj2" scope="session" value="${sessionScope.msj2}"/>
+        <c:set var="error" scope="session" value="${sessionScope.error}"/>
+        <c:if test="${error!=null}">
+        <script type="text/javascript">
+               alert("${error}"); 
+        </script>
+        <c:remove var="error" scope="session"/>
+        </c:if>
                <h1 align="center">Bienvenido a Casa de Subastas</h1>
                <br>
         <!-- INICIO DE LOS TABS -->     
@@ -65,7 +85,8 @@
   <li class="tab-title"><a href="#panel21">Registrar Articulo</a></li>
   <li class="tab-title"><a href="#panel31">Comprar Creditos</a></li>
   <li class="tab-title"><a href="#panel41">Mis Artículos</a></li>
-  <li class="tab-title"><a href="#panel51">Novedades</a></li> 
+  <li class="tab-title"><a href="#panel51">Mis Ofertas</a></li> 
+  <li class="tab-title"><a href="#panel61">Novedades</a></li> 
 </ul>
 <div class="tabs-content">
   <div class="content active" id="panel11">
@@ -116,7 +137,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=user"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -327,25 +348,17 @@
 
               <div class="row">
    
-                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
-                      
-                      <dl class="sub-nav medium-centered fffblanco">
-                      <dt>Filter:</dt>
-                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
-                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
-                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
-                      </dl>
-            </div>
+                 
                   
-                  <c:forEach var="i" items="${listaM}" varStatus="Counter">
-                      <c:if test="${Counter.count == (totalLista)}">
+                  <c:forEach var="i" items="${listaP}" varStatus="Counter">
+                      <c:if test="${Counter.count == (totalListaP)}">
                           <div class="large-3 medium-4 small-6 columns end"> 
                       </c:if>
-                      <c:if test="${Counter.count != (totalLista)}">
+                      <c:if test="${Counter.count != (totalListaP)}">
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=propio"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -356,6 +369,17 @@
                            
                             <h6 class="subheader">Precio Actual</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>
+                            <c:if test="${i.fechaFin != null}">
+                         <h6 class="subheader">Fecha Fin:</h6>
+                            <h6 class="subheader">${i.fechaFin}</h6>
+                        </c:if> 
                         </div>
                                </div>
                       
@@ -380,37 +404,156 @@
         
             </div>
     <!-- Fin Content 4-->
-  </div>   
+    
   <div class="content" id="panel51">
-      <!-- Inicio Content 5-->
-      <div class="row">
-            Holaaaaaaaaaaaaaaaaaaa
-            
-            <div class="medium-11 large-11 columns medium-centered">
-
-              <div class="row">
-   
-                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
-                      
-                      <dl class="sub-nav medium-centered fffblanco">
-                      <dt>Filter:</dt>
-                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
-                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
-                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
-                      </dl>
-            </div>
-                  
-                  
-              </div>
-            
-            </div>
-            
-        </div>
+<!-- Inicio Content 5-->
         
-            
-    <!-- Fin Content 5-->
+        <div class="large-8 columns">
+              <div class="row">
+                  
+                  <c:forEach var="i" items="${listaO}" varStatus="Counter">
+                      
+                      <c:if test="${Counter.count == (totalListaO)}">
+                          <div class="large-4 small-6 columns" end>
+                      </c:if>
+                      <c:if test="${Counter.count != (totalListaO)}">
+                          <div class="large-4 small-6 columns">
+                      </c:if>
+                      
+                       
+                              <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a>
+                          <div class="panel">
+                              <h5>${i.subasta.articulo.nombre}</h5>
+                                <h6>Tipo Subasta: ${i.subasta.articulo.tipo}</h6>
+                                                       
+                           <h6 class="subheader">Precio Actual:</h6>
+                            <h6 class="subheader">${i.subasta.precioActual}</h6>
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.subasta.estado}</h6>
+                           <h5>Mi Oferta</h5>
+                           <h6 class="subheader">Monto:</h6>
+                           <h6 class="subheader">${i.monto}</h6>
+                           <h6 class="subheader">Fecha de Oferta:</h6>
+                           <h6 class="subheader">${i.fecha}</h6>
+                           
+                           <c:if test="${i.mayor == 'True'}">
+                           <h5 class="subheader">Oferta Mayor</h5>
+                           </c:if>
+                           <c:if test="${i.mayor == 'false'}">
+                           <h5 class="subheader">Oferta No Mayor</h5>
+                           </c:if>
+                        </div>
+                        </div>
+                      
+                    </c:forEach>
+     
+                
+              </div>
+        </div>
+
+<!-- Fin Content 5-->
     </div>
     
+    
+    <div class="content active" id="panel61">
+<!-- Inicio Content 6-->
+   
+    
+        <br>
+       
+       
+            <div class="row">
+              <div class="large-12 columns">
+                  <div class="row">
+                      
+    <!-- INICIO COLUMNA 1 -->
+     <div class="large-4 small-6 columns">
+         <h2>Premios</h2><br>
+         <h3>Cantidad de Creditos: ${usuario.creditos}</h3>
+         
+           <!-- Notificacion 1 -->
+           
+           <c:forEach var="i" items="${listaPremio}" varStatus="Counter">
+           <div class="row">
+               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+            <div class="large-10 columns">
+                <p><strong>Se le ha otorgado un premio de ${i.cantidad} creditos. Usted tuvo la <c:if test="${i.tipo != 'Primero'}">${i.tipo}</c:if> oferta más alta.</strong> 
+            </div>
+          </div>
+               
+           </c:forEach>
+          
+                   
+          <hr/>
+                   
+                 
+          
+                    
+    </div>
+    <!-- FIN COLUMNA 1 -->              
+       
+       
+                   
+    <!-- INICIO COLUMNA 2 --> 
+    <div class="large-4 small-6 columns">
+        
+        <h2>Montos Recibidos</h2><br>
+              <!-- Notificacion 1 -->
+          <c:forEach var="i" items="${listaPago}" varStatus="Counter">
+           <div class="row">
+               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+            <div class="large-10 columns">
+              <p><strong>Usted ha recibido un pago de  ${i.monto} con fecha ${i.fecha}.</strong> 
+            </div>
+          </div>
+               
+           </c:forEach>
+                   
+          <hr/>
+                   
+            
+     
+        </div>
+       <!-- FIN COLUMNA 2 -->
+                   
+       
+       
+                   
+       <!-- INICIO COLUMNA 3 -->
+       <div class="large-4 small-12 columns">
+            <h2>Montos Pagados</h2><br>
+              <!-- Notificacion 1 -->
+          <c:forEach var="i" items="${listaCobro}" varStatus="Counter">
+           <div class="row">
+               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+            <div class="large-10 columns">
+              <p><strong>Usted ha realizado un pago de  ${i.monto} con fecha ${i.fecha}.</strong> 
+            </div>
+          </div>
+               
+           </c:forEach>
+                   
+          <hr/>
+                   
+             
+     
+           
+               
+    </div>
+     <!-- FIN COLUMNA 3 -->  
+                   
+       
+                      
+                      
+                      
+            </div>
+        </div>
+    </div>
+
+         
+            
+    <!-- Fin Content 6-->
+    </div>
   
   
      

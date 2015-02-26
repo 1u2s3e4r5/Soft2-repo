@@ -32,6 +32,15 @@ public class Articulo {
         this.precioBase = precioBase;
     }
 
+    public Articulo(Usuario vendedor, String nombre, String descripcion, String tipo, String fechaInicio, float precioBase) {
+        this.vendedor = vendedor;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.fechaInicio = fechaInicio;
+        this.precioBase = precioBase;
+    }
+
     
 
     public int getIdarticulo() {

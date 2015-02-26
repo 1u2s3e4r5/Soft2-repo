@@ -1,8 +1,7 @@
-<%-- 
-    Document   : detalleArticulo.jsp
-    Created on : 8/02/2015, 09:27:20 PM
-    Author     : Diego Nano A
---%>
+<%@page import="edu.ulima.bd.*" %>
+<%@page import ="edu.ulima.clases.*" %>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Collections"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,6 +14,8 @@
         <link rel="stylesheet" href="css/foundation.min.css"/>
         <link rel="stylesheet" href="css/normalize.css"/>
         <link rel="stylesheet" href="css/main2.css"/>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
         <script src="js/vendor/modernizr.js"></script>
         <title>JSP Page</title>
     </head>
@@ -23,9 +24,17 @@
         <div>
         <jsp:include page="barra.jsp"/>
         </div>
-                   
-        <br>
-        <br>         
+        <%
+        ConexionDAO dao = new ConexionDAO();
+        HttpSession ses = request.getSession();
+        Subasta s = (Subasta)ses.getAttribute("detallearticuloadmin");
+        s.setOfertas(dao.retornarOfertasporSubasta(s.getIdsubasta()));
+        ses.setAttribute("detallearticuloadmin", s);
+        ses.setAttribute("cuentaOfertas", s.getOfertas().size());
+        %>
+                 
+        <c:set var="i" scope="session" value="${sessionScope.detallearticuloadmin}"/>
+        <c:set var="l" scope="session" value="${sessionScope.cuentaOfertas}"/>     
 
         <div class="row">
         <div class="large-3 columns left">
@@ -53,7 +62,7 @@
                   </div>
          <!-- segunda seccion -->   
         <div class="large-5 columns">
-          <img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%;">
+          <img src="Imagen?id=${i.idsubasta}" style="width:100%;">
         </div>
           <!-- tercera seccion -->   
         <div class="large-5 columns">
@@ -62,12 +71,46 @@
                   <div class="inner-wrap">
                       <nav class="tab-bar">
                        
-
+                        <section class="left-small">
+                               <a class="left-off-canvas-toggle icon-legal icon-2x" href="#" style="padding-left: 0.4444rem;color:#ffffd0;text-decoration:none;"><span></span></a>
+                                </section>
                            <section class="middle tab-bar-section">
                                <h1 class="title">${i.articulo.nombre}</h1>
                           </section>
                       </nav>
-
+                          
+                          
+            <aside class="left-off-canvas-menu">
+                 <ul class="off-canvas-list">
+                     <li><label><c:out value="${i.articulo.nombre}"></c:out></label></li>
+                     
+                     
+                     <div class="" style="overflow-x:hidden;overflow-y:auto;">
+                         <div style="color:#ffffd0">
+                         <!--
+                            AQUI VAN LAS OFERTAS DEL PRODUCTO ********
+                            -->
+                            <p><c:forEach var="k" items="${i.ofertas}" varStatus="Counter">
+                              
+                             <h3>Oferta:</h3>
+                                <h4>Comprador:</h4>
+                                 <h5>${k.comprador.nombre}</h5>
+                                  <h4>Fecha:</h4>
+                                 <h5>${k.fecha}</h5>
+                                  <h4>Monto:</h4>
+                                 <h5>${k.monto}</h5>
+                                ---------------------------   
+                             </c:forEach></p>
+                         
+                         
+                         </div>
+                     </div>
+                     
+                     <!--  IF, SI NO HAY NINGUNA OFERTA, MENSAJE: "No existen ofertas para este artículo"  -->
+                     
+                     
+                 </ul>
+              </aside>
               
 
          <section class="main-section">

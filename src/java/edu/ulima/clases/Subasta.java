@@ -28,6 +28,13 @@ public class Subasta {
         this.tiempo=tiempo;
     }
 
+    public Subasta(Articulo articulo, String estado, float precioActual) {
+        this.articulo = articulo;
+        this.estado = estado;
+        this.precioActual = precioActual;
+    }
+
+    
     public Subasta() {
     }
 

@@ -7,6 +7,20 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Home</title>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/main2.css"/>
+    </head>
+    <body></body>
+        
+        <!-- franja superior -->    
+        <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
         <%
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -24,19 +38,6 @@
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
         <c:set var="items" scope="session" value="${sessionScope.listaM}"/>
         <c:set var="totalLista" value="${fn:length(items)}" />
-        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Home</title>
-        <link rel="stylesheet" href="css/foundation.css"/>
-        <link rel="stylesheet" href="css/normalize.css"/>
-        <link rel="stylesheet" href="css/main2.css"/>
-    </head>
-    <body></body>
-        
-        <!-- franja superior -->    
-        <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
                    
         <br>
         <br>
@@ -81,6 +82,7 @@
                 <dd class="active"><a href="servletbuscar?buscar=All">All</a></dd>
                 <dd><a href="servletbuscar?buscar=Activas">Activas</a></dd>
                 <dd><a href="servletbuscar?buscar=NoIniciadas">No Iniciadas</a></dd>
+                 <dd><a href="servletbuscar?buscar=PorIniciar">Por Iniciar</a></dd>
                       </dl>
                   </div>
      
@@ -92,17 +94,23 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=obs"><img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%; height: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=obs"><img src="Imagen?id=${i.idsubasta}" style="width:100%; height: 100%;"></a>
                           <div class="panel">
                                 <h5>${i.articulo.nombre}</h5>
                               <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
-                               <h6 class="subheader">Precio Base</h6>
+                               <h6 class="subheader">Precio Base:</h6>
                             <h6 class="subheader">${i.articulo.precioBase}</h6>
                             
                             
                            
-                            <h6 class="subheader">Precio Actual</h6>
+                            <h6 class="subheader">Precio Actual:</h6>
                             <h6 class="subheader">${i.precioActual}</h6>
+                            <h6 class="subheader">Estado:</h6>
+                            <h6 class="subheader">${i.estado}</h6>
+                            <c:if test="${i.fechaInicio != null}">
+                         <h6 class="subheader">Fecha Inicio:</h6>
+                            <h6 class="subheader">${i.fechaInicio}</h6>
+                        </c:if>     
                                 </div>
                         </div>
                       

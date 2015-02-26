@@ -9,13 +9,29 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-         if(u==null){
+            <%
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            if(u==null){
             response.sendRedirect("home.jsp");
-        }else{
+            } else {
+            %>
+        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Home</title>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/main2.css"/>
+    </head>
+    <body></body>
+        <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
+    
+        <% 
+        
         if (u.getTipo().equalsIgnoreCase("Cliente")){
         response.sendRedirect("homeUsuario.jsp");
-        }
+        }else {
         
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -27,23 +43,14 @@
             ses.setAttribute("listaM", lista);
             ses.setAttribute("lista",null);
         }
-         }
+        }
+         
+            }
         %>
            <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
-        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Home</title>
-        <link rel="stylesheet" href="css/foundation.css"/>
-        <link rel="stylesheet" href="css/normalize.css"/>
-        <link rel="stylesheet" href="css/main2.css"/>
-    </head>
-    <body></body>
-        
         <!-- franja superior -->    
-        <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
+        
                    
         <br>
         <br>
@@ -54,16 +61,16 @@
         int filters=(Integer)request.getSession().getAttribute("filters");
         switch(filters){
             case 2:  %>
-        <h1 align="center">Cerrar Subasta (Único paso)</h1>
+        <h1 align="center">Subastas Activas</h1>
         <% break;
             case 1:%>       
          <h1 align="center">Iniciar Subasta (paso 1)</h1>  
          <% break;
-            case 3:%>  
+            case 4:%>  
           <h1 align="center">Finalizar Subasta (Único paso)</h1>  
           <% break;
-            case 4:%> 
-           <h1 align="center">Subasta Finalizadas</h1>  
+            case 3:%> 
+           <h1 align="center">Subastas Concluidas</h1>  
            <% break;
             case 0:%> 
            <h1 align="center">Artículos</h1>   
@@ -164,14 +171,14 @@
                 <dd class="${active2}"><a href="servletbuscar2?buscar=Activas">Activas</a></dd>
                 <dd class="${active1}"><a href="servletbuscar2?buscar=NoIniciadas">No Iniciadas</a></dd>
                 <dd class="${active0}"><a href="servletbuscar2?buscar=PorIniciar">Por Iniciar</a></dd>
-                <dd class="${active3}"><a href="servletbuscar2?buscar=Terminado">Destacadas</a></dd>
                 <dd class="${active4}"><a href="servletbuscar2?buscar=Finalizado">Finalizadas</a></dd>
+                <dd class="${active3}"><a href="servletbuscar2?buscar=Concluido">Concluido</a></dd>
                 <!-- <dd class-"hide-for-small-only"><a href="#">Suspended</a></dd>-->
 
                
               </dl>
             </div>
-                  <form action="servletiniciar1" method ="post">
+                  <form action="servletiniciar1" method ="post" id="formC">
                   <c:forEach var="i" items="${listaM}" varStatus="Counter">
                       <c:if test="${Counter.count == (totalLista)}">
                           <div class="large-3 medium-4 small-6 columns end"> 
@@ -180,10 +187,15 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=admin"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=admin"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
                           <div class="panel">
-                              <c:if test="${sessionScope.filters eq 1 or sessionScope.filters eq 2}">
-                                <h5><input type="checkbox" name="feedback" value="${i.articulo.idarticulo}"/>${i.articulo.nombre}</h5>
+                              <c:if test="${sessionScope.filters eq 1}">
+                                <h5><input type="checkbox" name="feedback" value="${i.idsubasta}"/>${i.articulo.nombre}</h5>
+                                 </c:if>
+                                <c:if test="${sessionScope.filters eq 4}">
+                                
+                                <h5><input type="checkbox" name="concluir" value="${i.idsubasta}"/>${i.articulo.nombre}</h5>
+                                
                                  </c:if>
                                <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
                                <h6 class="subheader">Precio Base:</h6>
@@ -198,6 +210,8 @@
                             <c:if test="${i.fechaInicio != null}">
                          <h6 class="subheader">Fecha Inicio:</h6>
                             <h6 class="subheader">${i.fechaInicio}</h6>
+                            <h6 class="subheader">Fecha Fin</h6>
+                            <h6 class="subheader">${i.fechaFin}</h6>
                         </c:if>    
                             
                                 </div>
@@ -214,22 +228,22 @@
                         case 2:  %>
                     <div class="row">
                                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                                        <center> <input type="submit" value ="Cerrar subasta" class="button round"></center>
+                                       <!-- <center> <input type="submit" value ="Cerrar subasta" class="button round"></center> -->
                                     </div>  <br/>  <br/>
                     </div>
                     <% break;
                         case 1:%>       
                      <div class="row">
                                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                                        <center> <input type="submit" value ="Iniciar subasta" class="button round"></center>
+                                        <center> <input type="submit" value ="Iniciar Subasta" class="button round" name="action"></center>
                                     </div>  <br/>  <br/>
                     </div>  
 
                      <% break;
-                        case 3:%>  
+                        case 4:%>  
                       <div class="row">
                                     <div class="small-4 medium-4 large-4 columns large-centered medium-centered small-centered">
-                                        <center> <input type="submit" value ="Finalizar subasta" class="button round"></center>
+                                        <center> <input type="submit" value ="Concluir Subasta" class="button round" name="action"></center>
                                     </div>  <br/>  <br/>
                     </div>   
 
@@ -280,9 +294,7 @@
      
         
         
-        
-        
-   
+     
        
         
    

@@ -1262,4 +1262,47 @@ public class ConexionDAO {
               
                 return cobro;
            }
+      
+       public Articulo retornarArticuloPorIDUsuario(long id){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        Articulo a = null;
+        ResultSet rs = null;
+        String sql = "Select * from articulo where dni = ?";
+        try {
+            con = DBConexion.getConnection();
+           
+            
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+          
+            rs = ps.executeQuery();
+            
+            while (rs.next()){
+                
+                a = this.retornarArticulo(rs);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            
+                rs.close();
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+     return a;
+     
+     
+     
+     
+     
+     
+     
+     }
+      
 }
