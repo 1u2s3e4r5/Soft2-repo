@@ -57,7 +57,7 @@ public class ConexionDAO {
             }
            
         }
-        
+         
         return user;
     
  }
@@ -436,6 +436,39 @@ public class ConexionDAO {
             }
         }
         return subastas;
+    } 
+     
+     public List<Oferta> retornarOfertasPorUser(Usuario refUsuario){
+        Connection con = null;
+        boolean exito = false;
+        PreparedStatement ps = null;
+        List<Oferta> ofertas = new ArrayList<>();
+        ResultSet rs = null;
+        String sql = "Select * from oferta where dni = ?";
+        try{
+            con = DBConexion.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1,refUsuario.getDNI());
+           
+            
+            rs = ps.executeQuery();
+            while (rs.next()){
+                Oferta o = this.retornarOferta(rs);
+                ofertas.add(o);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            
+                rs.close();
+                    con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return ofertas;
     } 
      
      
@@ -933,7 +966,7 @@ public class ConexionDAO {
      
      }
      
-     public List<Premio> retornarPremiosPorUsuario(int idUsuario){
+     public List<Premio> retornarPremiosPorUsuario(long idUsuario){
      
       Connection con = null;
         boolean exito = false;
@@ -945,7 +978,7 @@ public class ConexionDAO {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             
-            ps.setInt(1, idUsuario);
+            ps.setLong(1, idUsuario);
            
             rs =ps.executeQuery();
             while (rs.next()){
@@ -999,19 +1032,19 @@ public class ConexionDAO {
 
      }
      
-     public List<Pago> retornarPagosPorUsuario(int idUsuario){
+     public List<Pago> retornarPagosPorUsuario(long idUsuario){
      
       Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
         List<Pago> pagos = new ArrayList<>();
-        String sql = "select * from pago where vendedor = ?";
+        String sql = "select * from pago where vendedor = ? order by fecha desc";
         ResultSet rs = null;
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             
-            ps.setInt(1, idUsuario);
+            ps.setLong(1, idUsuario);
            
             rs =ps.executeQuery();
             while (rs.next()){
@@ -1066,19 +1099,19 @@ public class ConexionDAO {
 
      }
      
-     public List<Cobro> retornarCobrosPorUsuario(int idUsuario){
+     public List<Cobro> retornarCobrosPorUsuario(long idUsuario){
      
       Connection con = null;
         boolean exito = false;
         PreparedStatement ps = null;
         List<Cobro> cobros = new ArrayList<>();
-        String sql = "select * from cobro where comprador= ?";
+        String sql = "select * from cobro where comprador= ? order by fecha desc";
         ResultSet rs = null;
         try {
             con = DBConexion.getConnection();
             ps = con.prepareStatement(sql);
             
-            ps.setInt(1, idUsuario);
+            ps.setLong(1, idUsuario);
            
             rs =ps.executeQuery();
             while (rs.next()){

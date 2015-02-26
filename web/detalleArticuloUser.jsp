@@ -15,34 +15,32 @@
         <link rel="stylesheet" href="css/foundation.min.css"/>
         <link rel="stylesheet" href="css/normalize.css"/>
         <link rel="stylesheet" href="css/main2.css"/>
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-
         <script src="js/vendor/modernizr.js"></script>
-
-
         <title>JSP Page</title>
     </head>
     <body>
             <!-- franja superior -->    
-        
+        <div>
         <jsp:include page="barra.jsp"/>
-        
-                 
+        </div>
+                   
+        <br>
+        <br>         
 
         <div class="row">
-        <div class="large-3 medium-3 columns left">
+        <div class="large-3 columns left">
           <h1><img src="imagen/Logo3.png"></h1>
         </div>
-        <div class="large-9 medium-9 columns right">
-          
-              <div class="row">
+        <div class="large-9 columns right">
+          <form>
+
               <div class="large-10 small-8 columns">
                   <br><br>
                    <a href="homeAdmin.jsp" class="button round " style= " height: 10% ; width: 100%">Buscar otros articulos</a>
                 </div>
-                  </div>
-          
+
+              
+          </form>
 
         </div>
         </div>
@@ -52,11 +50,10 @@
         <hr>
          <!-- primera seccion -->   
         <div class="large-2 columns">
-            .
                   </div>
          <!-- segunda seccion -->   
         <div class="large-5 columns">
-          <img src="Imagen?id=${i.articulo.idarticulo}" style="width:100%">
+          <img src="Imagen?id=${i.idsubasta}" style="width:100%">
         </div>
           <!-- tercera seccion -->   
         <div class="large-5 columns">
@@ -64,53 +61,30 @@
             <div class="off-canvas-wrap" data-offcanvas>
                   <div class="inner-wrap">
                       <nav class="tab-bar">
-                          
+                          <c:if test="${i.estado eq 'Iniciado'}">
                          <section class="left-small">
-                               <a class="left-off-canvas-toggle icon-legal icon-2x" href="#" style="padding-left: 0.4444rem;color:#ffffd0;text-decoration:none;"><span></span></a>
+                               <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
                            </section>
-                         
+                         </c:if>
 
                            <section class="middle tab-bar-section">
                                <h1 class="title">${i.articulo.nombre}</h1>
                           </section>
                       </nav>
-                
+                <c:if test="${i.estado eq 'Iniciado'}">
               <aside class="left-off-canvas-menu">
                  <ul class="off-canvas-list">
                      <li><label><c:out value="${i.articulo.nombre}"></c:out></label></li>
-                     
-			<!-- un condicional IF   
--->
-				<form action="servletofertar?idsubasta=${i.idsubasta}" method="post">
+                     <form action="servletofertar?idsubasta=${i.idsubasta}" method="post">
                      <li>Realizar una oferta</li>
                      <c:if test="${i.articulo.tipo eq 'Directa'}">
                      <li><input type="text" name="monto" placeholder="Ingresar Monto"/></li>
                      </c:if>
                      <li><input type="submit" value="Ofertar"/></li>
                      </form>
-
-
-
-                     
-                     <div class="" style="overflow-x:hidden;overflow-y:auto;">
-                         <div style="color:#ffffd0">
-                         <!--
-                            AQUI VAN LAS OFERTAS DEL PRODUCTO ********
-                            -->
-                         <p>adasdaaaaaaaaa123456789123456789123456789123456789
-                         123456789123456789123456789123456789
-                         123456789123456789123456789123456789</p>
-                         
-                         
-                         </div>
-                     </div>
-                     
-                     <!--  IF, SI NO HAY NINGUNA OFERTA, MENSAJE: "No existen ofertas para este artículo"  -->
-                     
-                     
                  </ul>
               </aside>
-                     
+                </c:if>
          <section class="main-section">
           <p><c:out value="${i.articulo.descripcion}"></c:out></p>
           <div class="panel">
@@ -126,13 +100,7 @@
             <h6 class="subheader"><c:out value="${i.articulo.vendedor.nombre}"></c:out></h6>
             <h5>Usuario</h5>
             <h6 class="subheader"><c:out value="${i.articulo.vendedor.usuario}"></c:out></h6>
-          
-          
-          <!-- IF QUE ACTIVA EL BOTON************   -->
-          <div class="row">
-          <div class=" large-7 medium-7 columns medium-centered"><a href="#" class="button">Resubastar Aquí</a></div>
-          </div>
-          
+           
           </div>
           </section>
 

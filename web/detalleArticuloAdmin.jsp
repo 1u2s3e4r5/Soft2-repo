@@ -14,6 +14,8 @@
         <link rel="stylesheet" href="css/foundation.min.css"/>
         <link rel="stylesheet" href="css/normalize.css"/>
         <link rel="stylesheet" href="css/main2.css"/>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
         <script src="js/vendor/modernizr.js"></script>
         <title>JSP Page</title>
     </head>

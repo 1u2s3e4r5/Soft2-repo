@@ -35,6 +35,7 @@ public class Servlet01 extends HttpServlet {
             ses.setAttribute("filters", 5);
             //System.out.println(u.getTipo());
             if (u.getTipo().equalsIgnoreCase("Cliente")){
+                System.out.println(u.getCreditos());
             response.sendRedirect("homeUsuario.jsp");
             }else{
             response.sendRedirect("homeAdmin.jsp");

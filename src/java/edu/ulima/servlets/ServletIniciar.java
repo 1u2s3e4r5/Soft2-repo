@@ -108,12 +108,12 @@ public class ServletIniciar extends HttpServlet {
         Premio premio2 = new Premio();
         premio2.setSubasta(sub);
         premio2.setCantidad(100);
-        premio2.setTipo("Segundo");
+        premio2.setTipo("segunda");
         
         Premio premio3 = new Premio();
         premio3.setSubasta(sub);
         premio3.setCantidad(50);
-        premio3.setTipo("Tercero");
+        premio3.setTipo("tercera");
         switch(trueCount){
             case 0:
             dao.concluirSubasta(sub);

@@ -16,7 +16,7 @@ public class Usuario {
         this.nombre = nombre;
         this.usuario = usuario;
         this.password = password;
-        this.creditos = 0;
+        this.creditos = creditos;
         this.tipo=tipo;
     }
 

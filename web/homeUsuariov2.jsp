@@ -8,35 +8,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%
-            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-            if(u==null){
+        <% Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+        if(u==null){
             response.sendRedirect("home.jsp");
-            } else {
-            %>
-        
-        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Home</title>
-        <link rel="stylesheet" href="css/foundation.css"/>
-        <link rel="stylesheet" href="css/normalize.css"/>
-        <link rel="stylesheet" href="css/main2.css"/>
-        <script src="js/vendor/modernizr.js"></script>
-    </head>
-    <body>   
-    
-    
-        
-        <!-- franja superior -->
-         <div>
-        <jsp:include page="barra.jsp"/>
-        </div>
-        
-         <% 
-       
+        }else{
         if (u.getTipo().equalsIgnoreCase("Admin")){
         response.sendRedirect("homeAdmin.jsp");
-        }else{
+        }
         
         HttpSession ses = request.getSession(true);
         ConexionDAO dao = new ConexionDAO();
@@ -50,33 +28,40 @@
         }
         List<Subasta> listaP = dao.retornarSubastasPorUserTodos(u.getUsuario());
                    ses.setAttribute("listaP", listaP);
-        List<Oferta> ofertas = dao.retornarOfertasPorUser(u);
-                ses.setAttribute("listaO", ofertas);
-        List<Premio> premios = dao.retornarPremiosPorUsuario(u.getDNI());
-                ses.setAttribute("listaPremio", premios);
-        List<Cobro> cobros = dao.retornarCobrosPorUsuario(u.getDNI());
-                ses.setAttribute("listaCobro", cobros);
-        List<Pago> pagos = dao.retornarPagosPorUsuario(u.getDNI());
-                ses.setAttribute("listaPago", pagos);
-               
-        }
+     
+        
         }
         %>
         <c:set var="totalLista" value="${fn:length(listaM)}" />
         <c:set var="totalListaP" value="${fn:length(listaP)}" />
-        <c:set var="totalListaO" value="${fn:length(listaO)}" />
         <c:set var="msj" scope="session" value="${sessionScope.msj}"/>
-        
          <c:set var="cred" scope="session" value="${sessionScope.cred}"/>
         <c:set var="msjOferta" scope="session" value="${sessionScope.msjOferta}"/>
         <c:set var="msj2" scope="session" value="${sessionScope.msj2}"/>
         <c:set var="error" scope="session" value="${sessionScope.error}"/>
-        <c:if test="${error!=null}">
+        
+        <meta name ="viewport" content = "width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Home</title>
+        <link rel="stylesheet" href="css/foundation.css"/>
+        <link rel="stylesheet" href="css/normalize.css"/>
+        <link rel="stylesheet" href="css/main2.css"/>
+        <script src="js/vendor/modernizr.js"></script>
+    </head>
+    <body>   
+    
+    <c:if test="${error!=null}">
         <script type="text/javascript">
                alert("${error}"); 
         </script>
         <c:remove var="error" scope="session"/>
-        </c:if>
+    </c:if>
+        
+        <!-- franja superior -->
+         <div>
+        <jsp:include page="barra.jsp"/>
+        </div>
+        
                <h1 align="center">Bienvenido a Casa de Subastas</h1>
                <br>
         <!-- INICIO DE LOS TABS -->     
@@ -88,10 +73,10 @@
   <li class="tab-title"><a href="#panel51">Mis Ofertas</a></li> 
   <li class="tab-title"><a href="#panel61">Novedades</a></li> 
 </ul>
+        
 <div class="tabs-content">
   <div class="content active" id="panel11">
       <!-- Inicio Content 1-->
-     
      
      <div class="row">
             <div class="medium-2 large-2 columns hide-for-small-down fffblanco2">
@@ -137,7 +122,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=user"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -348,7 +333,15 @@
 
               <div class="row">
    
-                 
+                  <div class="medium-8 large-8 columns medium-centered hide-for-small-down ">
+                      
+                      <dl class="sub-nav medium-centered fffblanco">
+                      <dt>Filter:</dt>
+                <dd class="active"><a href="servletbuscar3?buscar=All">All</a></dd>
+                <dd><a href="servletbuscar3?buscar=Activas">Activas</a></dd>
+                <dd><a href="servletbuscar3?buscar=NoIniciadas">No Iniciadas</a></dd>
+                      </dl>
+            </div>
                   
                   <c:forEach var="i" items="${listaP}" varStatus="Counter">
                       <c:if test="${Counter.count == (totalListaP)}">
@@ -358,7 +351,7 @@
                           <div class="large-3 medium-4 small-6 columns"> 
                       </c:if>
                        
-                              <a href="detallearticuloadmin?idarticulo=${i.idsubasta}&type=propio"><img src="Imagen?id=${i.idsubasta}" style="width: 100%;"></a>
+                              <a href="detallearticuloadmin?idarticulo=${i.articulo.idarticulo}&type=user"><img src="Imagen?id=${i.articulo.idarticulo}" style="width: 100%;"></a>
                           <div class="panel">
                               <h5>${i.articulo.nombre}</h5>
                                 <h6>Tipo Subasta: ${i.articulo.tipo}</h6>
@@ -410,50 +403,65 @@
         
         <div class="large-8 columns">
               <div class="row">
-                  
-                  <c:forEach var="i" items="${listaO}" varStatus="Counter">
-                      
-                      <c:if test="${Counter.count == (totalListaO)}">
-                          <div class="large-4 small-6 columns" end>
-                      </c:if>
-                      <c:if test="${Counter.count != (totalListaO)}">
-                          <div class="large-4 small-6 columns">
-                      </c:if>
-                      
-                       
-                              <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a>
-                          <div class="panel">
-                              <h5>${i.subasta.articulo.nombre}</h5>
-                                <h6>Tipo Subasta: ${i.subasta.articulo.tipo}</h6>
-                                                       
-                           <h6 class="subheader">Precio Actual:</h6>
-                            <h6 class="subheader">${i.subasta.precioActual}</h6>
-                            <h6 class="subheader">Estado:</h6>
-                            <h6 class="subheader">${i.subasta.estado}</h6>
-                           <h5>Mi Oferta</h5>
-                           <h6 class="subheader">Monto:</h6>
-                           <h6 class="subheader">${i.monto}</h6>
-                           <h6 class="subheader">Fecha de Oferta:</h6>
-                           <h6 class="subheader">${i.fecha}</h6>
-                           
-                           <c:if test="${i.mayor == 'True'}">
-                           <h5 class="subheader">Oferta Mayor</h5>
-                           </c:if>
-                           <c:if test="${i.mayor == 'false'}">
-                           <h5 class="subheader">Oferta No Mayor</h5>
-                           </c:if>
-                        </div>
-                        </div>
-                      
-                    </c:forEach>
      
-                
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/1000x1000&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
+     
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/500x500&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
+     
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/500x500&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
+     
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/500x500&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
+     
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/500x500&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
+     
+                <div class="large-4 small-6 columns">
+                  <img src="http://placehold.it/500x500&text=Thumbnail">
+     
+                  <div class="panel">
+                    <h5>Item Name</h5>
+                    <h6 class="subheader">$000.00</h6>
+                  </div>
+                </div>
               </div>
         </div>
 
 <!-- Fin Content 5-->
     </div>
-    
     
     <div class="content active" id="panel61">
 <!-- Inicio Content 6-->
@@ -469,25 +477,52 @@
     <!-- INICIO COLUMNA 1 -->
      <div class="large-4 small-6 columns">
          <h2>Premios</h2><br>
-         <h3>Cantidad de Creditos: ${usuario.creditos}</h3>
+         
          
            <!-- Notificacion 1 -->
-           
-           <c:forEach var="i" items="${listaPremio}" varStatus="Counter">
-           <div class="row">
-               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+          <div class="row">
+              
+              
+              
+            <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
             <div class="large-10 columns">
-                <p><strong>Se le ha otorgado un premio de ${i.cantidad} creditos. Usted tuvo la <c:if test="${i.tipo != 'Primero'}">${i.tipo}</c:if> oferta más alta.</strong> 
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
             </div>
           </div>
-               
-           </c:forEach>
-          
                    
           <hr/>
                    
-                 
-          
+             <!-- Notificacion 2 -->       
+          <div class="row">
+            
+            <div class="large-10 columns">
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
+              <ul class="inline-list">
+              </ul>
+
+            </div>
+          </div>
+     
+          <hr/>
+     
+            <!-- Notificacion 3 -->
+          <div class="row">
+            <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
+            <div class="large-10 columns">
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
+              <ul class="inline-list">
+                <li><a href="">Reply</a></li>
+                <li><a href="">Share</a></li>
+              </ul>
+     
+     
+              <h6>2 Comments</h6>
+              <div class="row">
+                <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
+                <div class="large-10 columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+              </div>
+            </div>
+          </div>
                     
     </div>
     <!-- FIN COLUMNA 1 -->              
@@ -497,21 +532,31 @@
     <!-- INICIO COLUMNA 2 --> 
     <div class="large-4 small-6 columns">
         
-        <h2>Montos Recibidos</h2><br>
+        <h2>Cobros</h2><br>
               <!-- Notificacion 1 -->
-          <c:forEach var="i" items="${listaPago}" varStatus="Counter">
-           <div class="row">
-               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+          <div class="row">
+            <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
             <div class="large-10 columns">
-              <p><strong>Usted ha recibido un pago de  ${i.monto} con fecha ${i.fecha}.</strong> 
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
             </div>
           </div>
-               
-           </c:forEach>
                    
           <hr/>
                    
+             <!-- Notificacion 2 -->       
+          <div class="row">
             
+            <div class="large-10 columns">
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
+              <ul class="inline-list">
+              </ul>
+
+            </div>
+          </div>
+     
+          <hr/>
+     
+          
      
         </div>
        <!-- FIN COLUMNA 2 -->
@@ -521,21 +566,29 @@
                    
        <!-- INICIO COLUMNA 3 -->
        <div class="large-4 small-12 columns">
-            <h2>Montos Pagados</h2><br>
-              <!-- Notificacion 1 -->
-          <c:forEach var="i" items="${listaCobro}" varStatus="Counter">
-           <div class="row">
-               <div class="large-2 columns small-3"> <a href="detallearticuloadmin?idarticulo=${i.subasta.idsubasta}&type=user"><img src="Imagen?id=${i.subasta.idsubasta}" style="width: 100%;"></a></div>
+           <h2>Pagos</h2><br>
+           <!-- Notificacion 1 -->
+          <div class="row">
+            <div class="large-2 columns small-3"><img src="http://placehold.it/80x80&text=[img]"/></div>
             <div class="large-10 columns">
-              <p><strong>Usted ha realizado un pago de  ${i.monto} con fecha ${i.fecha}.</strong> 
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
             </div>
           </div>
-               
-           </c:forEach>
                    
           <hr/>
                    
-             
+             <!-- Notificacion 2 -->       
+          <div class="row">
+            
+            <div class="large-10 columns">
+              <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
+              <ul class="inline-list">
+              </ul>
+
+            </div>
+          </div>
+     
+          <hr/>
      
            
                
@@ -555,12 +608,11 @@
     <!-- Fin Content 6-->
     </div>
   
-  
      
      
 </div>
-    
-        <!-- FIN DE LOS TABS -->           
+   <!-- FIN DE LOS TABS -->     
+   
         <br>
         <br>
     
